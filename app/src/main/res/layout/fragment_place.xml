@@ -116,7 +116,7 @@
 
                 <fragment
                     android:id="@+id/fragment_mapView"
-                    class="enfei.com.testfirebase.fragments.WorkaroundMapFragment"
+                    class="pl.jwojcik.testfirebase.fragments.WorkaroundMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 

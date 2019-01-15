@@ -5,7 +5,7 @@ android {
     buildToolsVersion '26.0.3'
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
-        applicationId "enfei.com.testfirebase"
+        applicationId "pl.jwojcik.gascompanion"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1

@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">TestFirebase</string>
+    <string name="app_name">GasCompanion</string>
     <string name="facebook_app_id">161815151048402</string>
     <string name="fb_login_protocol_scheme">fb161815151048402</string>
-    <string name="google_maps_key">AIzaSyCyiIKO1aAALzUxlSvoKzRTXcHR01It1-Q</string>
-    <string name="google_server_api_key">AIzaSyAnRWkAEP0MCecAZDUMOk9szHpcrCXBA-Y</string>
+    <string name="google_maps_key">AIzaSyDK0nI90G747o2B0MKdvrMhVEedYUFSSTY</string>
+    <string name="google_server_api_key">AIzaSyDK0nI90G747o2B0MKdvrMhVEedYUFSSTY</string>
 
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>

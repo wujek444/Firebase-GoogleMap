@@ -360,9 +360,11 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     }
 
     private void startPlaceActivity() {
+        //wyszukiwanie miejsca
         try {
             AutocompleteFilter filter = new AutocompleteFilter.Builder()
-                    .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT)
+                    .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+                    .setCountry("PL")
                     .build();
             Intent intent =
                     new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
@@ -378,10 +380,11 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //wykonywane po każdym startActivityForResult()
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-                findNearbyRestaurants(place);
+                findNearbyGasStations(place);
                 btnSearch.setText(place.getName());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getActivity(), data);
@@ -395,14 +398,14 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     }
 
 
-    private void findNearbyRestaurants(Place place) {
+    private void findNearbyGasStations(Place place) {
         progressBar.setVisibility(View.VISIBLE);
         mMap.clear();
         mRestaurants.clear();
         mListAdapter.setList(mRestaurants);
         String latlng = place.getLatLng().latitude + "," + place.getLatLng().longitude;
 
-        String urlString = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&types=restaurant&key=%s", latlng, getString(R.string.google_server_api_key));
+        String urlString = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&types=gas_station&key=%s", latlng, getString(R.string.google_server_api_key));
 
         httpClient.get(getContext(), urlString, new AsyncHttpResponseHandler() {
             @Override

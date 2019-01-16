@@ -20,8 +20,7 @@ public class PixelUtils {
     }
 
     public static float getPixelScaleFactor(Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT);
+        return (context.getResources().getDisplayMetrics().xdpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
 }

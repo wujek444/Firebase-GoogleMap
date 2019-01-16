@@ -15,7 +15,7 @@ import java.util.List;
  * Created by king on 18/08/2017.
  */
 
-public class Restaurant extends Object implements Parcelable {
+public class GasStation extends Object implements Parcelable {
 
     public String id;
     public String name;
@@ -28,11 +28,11 @@ public class Restaurant extends Object implements Parcelable {
     public double rating;
     public List<String> photos;
 
-    public Restaurant() {
+    public GasStation() {
 
     }
 
-    public Restaurant(String name, String subTitle, String description, String address, MyLocation location) {
+    public GasStation(String name, String subTitle, String description, String address, MyLocation location) {
         this.name = name;
         this.subTitle = subTitle;
         this.description = description;
@@ -40,7 +40,7 @@ public class Restaurant extends Object implements Parcelable {
         this.location = location;
     }
 
-    public Restaurant(JSONObject jsonObject) {
+    public GasStation(JSONObject jsonObject) {
         try {
             name = jsonObject.getString("name");
             double lat = jsonObject.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
@@ -65,7 +65,7 @@ public class Restaurant extends Object implements Parcelable {
     }
 
 
-    protected Restaurant(Parcel in) {
+    protected GasStation(Parcel in) {
         id = in.readString();
         name = in.readString();
         subTitle = in.readString();
@@ -97,15 +97,15 @@ public class Restaurant extends Object implements Parcelable {
         return 0;
     }
 
-    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+    public static final Creator<GasStation> CREATOR = new Creator<GasStation>() {
         @Override
-        public Restaurant createFromParcel(Parcel in) {
-            return new Restaurant(in);
+        public GasStation createFromParcel(Parcel in) {
+            return new GasStation(in);
         }
 
         @Override
-        public Restaurant[] newArray(int size) {
-            return new Restaurant[size];
+        public GasStation[] newArray(int size) {
+            return new GasStation[size];
         }
     };
 

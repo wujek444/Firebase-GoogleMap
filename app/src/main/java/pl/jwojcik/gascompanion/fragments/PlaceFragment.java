@@ -54,10 +54,10 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
-import pl.jwojcik.gascompanion.activities.RestaurantActivity;
-import pl.jwojcik.gascompanion.adapters.RestaurantAdapter;
+import pl.jwojcik.gascompanion.activities.GasStationActivity;
+import pl.jwojcik.gascompanion.adapters.GasStationAdapter;
 import pl.jwojcik.gascompanion.adapters.ViewPagerAdapter;
-import pl.jwojcik.gascompanion.models.Restaurant;
+import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.services.FirebaseService;
 import pl.jwojcik.gascompanion.services.ObjectResultListener;
 import pl.jwojcik.gascompanion.services.ResultListener;
@@ -99,15 +99,15 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
 
     private boolean isShowMap = true;
 
-    private List<Restaurant> mRestaurants = new ArrayList<>();
-    private Restaurant selectedRestaurant;
+    private List<GasStation> mGasStations = new ArrayList<>();
+    private GasStation selectedGasStation;
     private Drawable mDotEnabled;
     private Drawable mDotDisabled;
     private AsyncHttpClient httpClient;
 
     private ViewPagerAdapter mTopAdapter;
     private ViewPagerAdapter mBottomAdapter;
-    private RestaurantAdapter mListAdapter;
+    private GasStationAdapter mListAdapter;
 
     private WorkaroundMapFragment mapFragment;
 
@@ -126,12 +126,12 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
         initView();
         mTopAdapter = new ViewPagerAdapter(getFragmentManager());
         mBottomAdapter = new ViewPagerAdapter(getFragmentManager());
-        mListAdapter = new RestaurantAdapter(getContext(), 0);
+        mListAdapter = new GasStationAdapter(getContext(), 0);
         listView.setAdapter(mListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Restaurant item = mListAdapter.getItem(position);
+                GasStation item = mListAdapter.getItem(position);
                 showUIs(item);
             }
         });
@@ -205,31 +205,31 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
 
     private void loadData() {
         progressBar.setVisibility(View.VISIBLE);
-        mRestaurants.clear();
-        mListAdapter.setList(mRestaurants);
-        FirebaseService.shared.getRestaurants(new ResultListener() {
+        mGasStations.clear();
+        mListAdapter.setList(mGasStations);
+        FirebaseService.shared.getGasStations(new ResultListener() {
             @Override
             public void onResult(boolean isSuccess, String error, List object) {
                 progressBar.setVisibility(View.GONE);
                 if (object != null) {
                     for (int i = 0; i < object.size(); i++) {
-                        Restaurant item = (Restaurant) object.get(i);
-                        mRestaurants.add(item);
+                        GasStation item = (GasStation) object.get(i);
+                        mGasStations.add(item);
                         if (i == 0) {
                             updateUIs(item);
                         }
                     }
-                    mListAdapter.setList(mRestaurants);
-                    showNearbyPlaces(mRestaurants);
+                    mListAdapter.setList(mGasStations);
+                    showNearbyPlaces(mGasStations);
 
                 }
             }
         });
     }
 
-    private void updateUIs(Restaurant item) {
+    private void updateUIs(GasStation item) {
 
-        selectedRestaurant = item;
+        selectedGasStation = item;
         mTopViewPager.removeAllViews();
         mBottomViewPager.removeAllViews();
         mTopAdapter.removeAll();
@@ -349,8 +349,8 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
                 toggleUI();
                 break;
             case R.id.btn_enter:
-                Intent intent = new Intent(getContext(), RestaurantActivity.class);
-                intent.putExtra("value", selectedRestaurant);
+                Intent intent = new Intent(getContext(), GasStationActivity.class);
+                intent.putExtra("value", selectedGasStation);
                 startActivity(intent);
                 break;
             case R.id.btn_search:
@@ -401,8 +401,8 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     private void findNearbyGasStations(Place place) {
         progressBar.setVisibility(View.VISIBLE);
         mMap.clear();
-        mRestaurants.clear();
-        mListAdapter.setList(mRestaurants);
+        mGasStations.clear();
+        mListAdapter.setList(mGasStations);
         String latlng = place.getLatLng().latitude + "," + place.getLatLng().longitude;
 
         String urlString = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&types=gas_station&key=%s", latlng, getString(R.string.google_server_api_key));
@@ -415,16 +415,16 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
                     try {
                         String strResponse = new String(responseBody, "UTF-8");
                         JSONObject jsonObject = new JSONObject(strResponse);
-                        mRestaurants = parseData(jsonObject);
+                        mGasStations = parseData(jsonObject);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
 
-                showNearbyPlaces(mRestaurants);
-                mListAdapter.setList(mRestaurants);
-//                if (!mRestaurants.isEmpty()) {
-//                    Restaurant item = mRestaurants.get(0);
+                showNearbyPlaces(mGasStations);
+                mListAdapter.setList(mGasStations);
+//                if (!mGasStations.isEmpty()) {
+//                    GasStation item = mGasStations.get(0);
 //                    showUIs(item);
 //                }
                 progressBar.setVisibility(View.GONE);
@@ -437,10 +437,10 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
         });
     }
 
-    private void showNearbyPlaces(List<Restaurant> list) {
+    private void showNearbyPlaces(List<GasStation> list) {
 
         for (int i = 0; i < list.size(); i++) {
-            Restaurant item = list.get(i);
+            GasStation item = list.get(i);
             MarkerOptions options = new MarkerOptions();
             LatLng latLng = new LatLng(item.location.lat, item.location.lng);
             options.position(latLng);
@@ -457,10 +457,10 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
 
     }
 
-    private void getPlacePhotos(final Restaurant restaurant) {
+    private void getPlacePhotos(final GasStation gasStation) {
 
         progressBar.setVisibility(View.VISIBLE);
-        String placeId = restaurant.place_id;
+        String placeId = gasStation.place_id;
         String urlString = String.format("https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s", placeId, getString(R.string.google_server_api_key));
         httpClient.get(getContext(), urlString, new AsyncHttpResponseHandler() {
             @Override
@@ -471,15 +471,16 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
                     try {
                         String strResponse = new String(responseBody, "UTF-8");
                         JSONObject jsonObject = new JSONObject(strResponse);
+                        //fixme: crash gdy nie ma zdjęć
                         JSONArray jsonArray = jsonObject.getJSONObject("result").getJSONArray("photos");
                         List<String> photos = new ArrayList<String>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             String path = jsonArray.getJSONObject(i).getString("photo_reference");
                             photos.add(path);
                         }
-                        restaurant.photos = photos;
+                        gasStation.photos = photos;
 
-                        FirebaseService.shared.createRestaurant(restaurant, new ObjectResultListener() {
+                        FirebaseService.shared.createGasStation(gasStation, new ObjectResultListener() {
                             @Override
                             public void onResult(boolean isSuccess, String error, Object object) {
 
@@ -491,26 +492,26 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
                     }
 
                 }
-                updateUIs(restaurant);
+                updateUIs(gasStation);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 progressBar.setVisibility(View.GONE);
-                updateUIs(restaurant);
+                updateUIs(gasStation);
             }
         });
 
     }
 
-    private List<Restaurant> parseData(JSONObject jsonObject) {
-        List<Restaurant> list = new ArrayList<>();
+    private List<GasStation> parseData(JSONObject jsonObject) {
+        List<GasStation> list = new ArrayList<>();
         try {
             JSONArray jsonArray = jsonObject.getJSONArray("results");
             Log.d("Json parser: started", jsonArray.toString());
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
-                Restaurant item = new Restaurant(object);
+                GasStation item = new GasStation(object);
                 list.add(item);
             }
         } catch (JSONException e) {
@@ -581,14 +582,14 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
 
         if (marker.getTag() != null) {
             int position = (int) marker.getTag();
-            Restaurant item = mRestaurants.get(position);
+            GasStation item = mGasStations.get(position);
             showUIs(item);
         }
 
         return false;
     }
 
-    private void showUIs(Restaurant item) {
+    private void showUIs(GasStation item) {
         if (item.photos == null || item.photos.isEmpty()) {
             getPlacePhotos(item);
         } else {

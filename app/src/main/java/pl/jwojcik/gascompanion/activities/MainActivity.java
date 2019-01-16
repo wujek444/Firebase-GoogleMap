@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    DatabaseReference mRestaurantRef;
+    DatabaseReference mGasStationsRef;
     private void test() {
-        mRestaurantRef = FirebaseDatabase.getInstance().getReference("restaurants");
+        mGasStationsRef = FirebaseDatabase.getInstance().getReference("gasStations");
     }
 
 }

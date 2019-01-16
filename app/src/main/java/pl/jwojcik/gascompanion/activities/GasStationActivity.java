@@ -22,7 +22,7 @@ import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.adapters.FoodAdapter;
 import pl.jwojcik.gascompanion.models.Food;
-import pl.jwojcik.gascompanion.models.Restaurant;
+import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.services.FirebaseService;
 import pl.jwojcik.gascompanion.services.ResultListener;
 
@@ -30,7 +30,7 @@ import pl.jwojcik.gascompanion.services.ResultListener;
  * Created by king on 17/08/2017.
  */
 
-public class RestaurantActivity extends AppCompatActivity implements View.OnClickListener {
+public class GasStationActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView btnBack;
     private ImageView btnInfo;
@@ -51,15 +51,15 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
 
     private ProgressDialog progressDialog;
 
-    private Restaurant restaurant;
+    private GasStation gasStation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant);
+        setContentView(R.layout.activity_gas_station);
 
         Bundle bundle = getIntent().getExtras();
-        restaurant = bundle.getParcelable("value");
+        gasStation = bundle.getParcelable("value");
 
         btnBack = (ImageView) findViewById(R.id.iv_back);
         btnInfo = (ImageView) findViewById(R.id.iv_info);
@@ -106,15 +106,15 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initData() {
-        if (restaurant != null) {
-            tvTitle.setText(restaurant.name);
-            tvSubTitle.setText(restaurant.subTitle);
-            tvAddress.setText(restaurant.address);
+        if (gasStation != null) {
+            tvTitle.setText(gasStation.name);
+            tvSubTitle.setText(gasStation.subTitle);
+            tvAddress.setText(gasStation.address);
 
-            if (restaurant.photos == null || restaurant.photos.isEmpty()) {
+            if (gasStation.photos == null || gasStation.photos.isEmpty()) {
 
             } else {
-                String photoValue = restaurant.photos.get(0);
+                String photoValue = gasStation.photos.get(0);
                 String photoUrl = String.format("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=%s&key=%s", photoValue, getString(R.string.google_server_api_key));
                 MyApplication.mImageLoader.displayImage(photoUrl, ivImage, new ImageLoadingListener() {
                     @Override
@@ -166,16 +166,16 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
                         }
                     }
 
-                    FoodAdapter startersAdapter = new FoodAdapter(RestaurantActivity.this, mStarters);
+                    FoodAdapter startersAdapter = new FoodAdapter(GasStationActivity.this, mStarters);
                     mRecyclerViewStarters.setAdapter(startersAdapter);
 
-                    FoodAdapter drinksAdapter = new FoodAdapter(RestaurantActivity.this, mDrinks);
+                    FoodAdapter drinksAdapter = new FoodAdapter(GasStationActivity.this, mDrinks);
                     mRecyclerViewDrinks.setAdapter(drinksAdapter);
 
-                    FoodAdapter dishesAdapter = new FoodAdapter(RestaurantActivity.this, mDishes);
+                    FoodAdapter dishesAdapter = new FoodAdapter(GasStationActivity.this, mDishes);
                     mRecyclerViewDishes.setAdapter(dishesAdapter);
 
-                    FoodAdapter dessertsAdapter = new FoodAdapter(RestaurantActivity.this, mDesserts);
+                    FoodAdapter dessertsAdapter = new FoodAdapter(GasStationActivity.this, mDesserts);
                     mRecyclerViewDesserts.setAdapter(dessertsAdapter);
 
                 }

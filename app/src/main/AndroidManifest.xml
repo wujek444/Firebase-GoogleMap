@@ -62,7 +62,7 @@
         <activity android:name="pl.jwojcik.gascompanion.activities.ResetPasswordActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="pl.jwojcik.gascompanion.activities.RestaurantActivity"
+        <activity android:name="pl.jwojcik.gascompanion.activities.GasStationActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activities.PlacesActivity"

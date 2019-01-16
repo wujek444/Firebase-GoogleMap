@@ -27,7 +27,7 @@ import java.util.List;
 import pl.jwojcik.gascompanion.Constants;
 import pl.jwojcik.gascompanion.models.CurrentUser;
 import pl.jwojcik.gascompanion.models.Food;
-import pl.jwojcik.gascompanion.models.Restaurant;
+import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.models.User;
 
 /**
@@ -38,21 +38,21 @@ public class FirebaseService {
 
     public static FirebaseService shared = new FirebaseService();
     private static final String KEY_USERS = "users";
-    private static final String KEY_RESTAURANTS = "restaurants";
+    private static final String KEY_GAS_STATIONS = "gasStations";
     private static final String KEY_FOODS = "foods";
     private static final String KEY_DETAILS = "details";
     private static final String KEY_PHOTO = "photo";
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usersRef;
-    private DatabaseReference restaurantsRef;
+    private DatabaseReference gasStationsRef;
     private DatabaseReference foodsRef;
     private StorageReference storageRef;
 
     public FirebaseService() {
         firebaseAuth = FirebaseAuth.getInstance();
         usersRef = FirebaseDatabase.getInstance().getReference(KEY_USERS);
-        restaurantsRef = FirebaseDatabase.getInstance().getReference(KEY_RESTAURANTS);
+        gasStationsRef = FirebaseDatabase.getInstance().getReference(KEY_GAS_STATIONS);
         foodsRef = FirebaseDatabase.getInstance().getReference(KEY_FOODS);
         storageRef = FirebaseStorage.getInstance().getReference();
     }
@@ -222,10 +222,10 @@ public class FirebaseService {
         });
     }
 
-    public void createRestaurant(Restaurant restaurant, ObjectResultListener listener) {
+    public void createGasStation(GasStation gasStation, ObjectResultListener listener) {
 
-        String newId = restaurant.place_id;
-        restaurantsRef.child(newId).setValue(restaurant.firebaseDetails());
+        String newId = gasStation.place_id;
+        gasStationsRef.child(newId).setValue(gasStation.firebaseDetails());
         listener.onResult(true, null, null);
     }
 
@@ -245,15 +245,15 @@ public class FirebaseService {
         }
     }
 
-    public void getRestaurants(final ResultListener listener) {
+    public void getGasStations(final ResultListener listener) {
 
-        restaurantsRef.addValueEventListener(new ValueEventListener() {
+        gasStationsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Restaurant> list = new ArrayList<Restaurant>();
+                List<GasStation> list = new ArrayList<GasStation>();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                    Restaurant restaurant = snapshot.getValue(Restaurant.class);
-                    list.add(restaurant);
+                    GasStation gasStation = snapshot.getValue(GasStation.class);
+                    list.add(gasStation);
                 }
                 listener.onResult(true, null, list);
 

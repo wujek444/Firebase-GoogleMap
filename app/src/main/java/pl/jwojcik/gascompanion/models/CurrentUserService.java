@@ -6,13 +6,13 @@ import android.graphics.Bitmap;
  * Created by king on 18/08/2017.
  */
 
-public class CurrentUser {
+public class CurrentUserService {
 
-    public static CurrentUser shared = new CurrentUser();
+    public static CurrentUserService shared = new CurrentUserService();
 
-    public User user;
+    private User user;
 
-    public CurrentUser() {}
+    public CurrentUserService() {}
 
     public static void login(User user) {
         shared.user = user;
@@ -26,4 +26,11 @@ public class CurrentUser {
         shared.user.image = bitmap;
     }
 
+    public static User getLoggedUser(){
+        return shared.user;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }

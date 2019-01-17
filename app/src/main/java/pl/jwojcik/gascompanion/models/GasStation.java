@@ -17,16 +17,19 @@ import java.util.List;
 
 public class GasStation extends Object implements Parcelable {
 
-    public String id;
-    public String name;
-    public String subTitle;
-    public String description;
-    public MyLocation location;
-    public String address;
-    public int price_level;
-    public String place_id;
-    public double rating;
-    public List<String> photos;
+    private String id;
+    private String name;
+    private String subTitle;
+    private String description;
+    private MyLocation location;
+    private String address;
+    private String place_id;
+    private double rating;
+    private List<String> photos;
+    private List<Double> pb95Price;
+    private List<Double> pb98Price;
+    private List<Double> dieselPrice;
+    public List<Double> lpgPrice;
 
     public GasStation() {
 
@@ -47,7 +50,6 @@ public class GasStation extends Object implements Parcelable {
             double lng = jsonObject.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
             location = new MyLocation(lat, lng);
             place_id = jsonObject.getString("place_id");
-            price_level = jsonObject.getInt("price_level");
             rating = jsonObject.getDouble("rating");
             address = jsonObject.getString("vicinity");
             JSONArray jsonArray = jsonObject.getJSONArray("types");
@@ -72,7 +74,6 @@ public class GasStation extends Object implements Parcelable {
         description = in.readString();
         location = in.readParcelable(MyLocation.class.getClassLoader());
         address = in.readString();
-        price_level = in.readInt();
         place_id = in.readString();
         rating = in.readDouble();
         photos = in.createStringArrayList();
@@ -86,7 +87,6 @@ public class GasStation extends Object implements Parcelable {
         dest.writeString(description);
         dest.writeParcelable(location, flags);
         dest.writeString(address);
-        dest.writeInt(price_level);
         dest.writeString(place_id);
         dest.writeDouble(rating);
         dest.writeStringList(photos);
@@ -124,11 +124,105 @@ public class GasStation extends Object implements Parcelable {
         result.put("id", id);
         result.put("place_id", place_id);
         result.put("rating", rating);
-        result.put("price_level", price_level);
         if (photos != null && !photos.isEmpty())
             result.put("photos", photos);
 
         return result;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public MyLocation getLocation() {
+        return location;
+    }
+
+    public void setLocation(MyLocation location) {
+        this.location = location;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPlace_id() {
+        return place_id;
+    }
+
+    public void setPlace_id(String place_id) {
+        this.place_id = place_id;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
+    }
+
+    public List<Double> getPb95Price() {
+        return pb95Price;
+    }
+
+    public void setPb95Price(List<Double> pb95Price) {
+        this.pb95Price = pb95Price;
+    }
+
+    public List<Double> getPb98Price() {
+        return pb98Price;
+    }
+
+    public void setPb98Price(List<Double> pb98Price) {
+        this.pb98Price = pb98Price;
+    }
+
+    public List<Double> getDieselPrice() {
+        return dieselPrice;
+    }
+
+    public void setDieselPrice(List<Double> dieselPrice) {
+        this.dieselPrice = dieselPrice;
+    }
 }

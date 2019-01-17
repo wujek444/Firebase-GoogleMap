@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.jwojcik.gascompanion.Constants;
-import pl.jwojcik.gascompanion.models.CurrentUser;
+import pl.jwojcik.gascompanion.models.CurrentUserService;
 import pl.jwojcik.gascompanion.models.Food;
 import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.models.User;
@@ -122,7 +122,7 @@ public class FirebaseService {
                         } else {
                             if (user != null) {
                                 createUser(user, true);
-                                CurrentUser.login(user);
+                                CurrentUserService.login(user);
                             }
                             listener.onResult(true, null, null);
                         }
@@ -224,7 +224,7 @@ public class FirebaseService {
 
     public void createGasStation(GasStation gasStation, ObjectResultListener listener) {
 
-        String newId = gasStation.place_id;
+        String newId = gasStation.getPlace_id();
         gasStationsRef.child(newId).setValue(gasStation.firebaseDetails());
         listener.onResult(true, null, null);
     }

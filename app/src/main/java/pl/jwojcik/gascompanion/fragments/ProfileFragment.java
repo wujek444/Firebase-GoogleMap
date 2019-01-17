@@ -23,7 +23,7 @@ import pl.jwojcik.gascompanion.Constants;
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.activities.LoginActivity;
 import pl.jwojcik.gascompanion.activities.ResetPasswordActivity;
-import pl.jwojcik.gascompanion.models.CurrentUser;
+import pl.jwojcik.gascompanion.models.CurrentUserService;
 import pl.jwojcik.gascompanion.models.User;
 
 /**
@@ -86,7 +86,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         btnResetPassword.setOnClickListener(this);
         btnLogout.setOnClickListener(this);
 
-        User user = CurrentUser.shared.user;
+        User user = CurrentUserService.getLoggedUser();
         try {
             if (!TextUtils.isEmpty(user.name)) {
                 tvName.setText(user.name);
@@ -180,7 +180,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void logout() {
         auth.signOut();
-        CurrentUser.logout();
+        CurrentUserService.logout();
     }
 
 }

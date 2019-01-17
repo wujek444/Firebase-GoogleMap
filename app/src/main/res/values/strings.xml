@@ -47,10 +47,10 @@
     <string name="help_string">Help</string>
 
     <string name="ok_string">OK</string>
-    <string name="cancel_string">Cancel</string>
-    <string name="enter_string">Enter</string>
+    <string name="cancel_string">Anuluj</string>
+    <string name="enter_string">Wybierz</string>
 
-    <string name="list_string">List</string>
-    <string name="map_string">Map</string>
+    <string name="list_string">Lista</string>
+    <string name="map_string">Mapa</string>
 
 </resources>

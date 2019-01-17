@@ -91,7 +91,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     private TextView tvAddress;
     private TextView tvTitle;
     private TextView tvSubTitle;
-    private FrameLayout layoutTop;
+//    private FrameLayout layoutTop;
     private FrameLayout layoutBottom;
 
     private GoogleMap mMap;
@@ -143,26 +143,26 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     private void initView() {
 
         mScrollView = (ScrollView) view.findViewById(R.id.layout_scrollView);
-        layoutTop = (FrameLayout) view.findViewById(R.id.layout_top);
+//        layoutTop = (FrameLayout) view.findViewById(R.id.layout_top);
         layoutBottom = (FrameLayout) view.findViewById(R.id.layout_bottom);
-        mTopViewPager = (ViewPager) view.findViewById(R.id.viewPager_top);
+//        mTopViewPager = (ViewPager) view.findViewById(R.id.viewPager_top);
         mBottomViewPager = (ViewPager) view.findViewById(R.id.viewPager_bottom);
-        mTopIndicator = (LinearLayout) view.findViewById(R.id.indicator_top);
+//        mTopIndicator = (LinearLayout) view.findViewById(R.id.indicator_top);
         mBottomIndicator = (LinearLayout) view.findViewById(R.id.indicator_bottom);
-        btnFilter = (ImageView) view.findViewById(R.id.iv_filter);
+//        btnFilter = (ImageView) view.findViewById(R.id.iv_filter);
         btnSearch = (Button) view.findViewById(R.id.btn_search);
         btnToggle = (Button) view.findViewById(R.id.btn_toggle);
         btnEnter = (Button) view.findViewById(R.id.btn_enter);
         listView = (ListView) view.findViewById(R.id.listView);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        tvAddress = (TextView) view.findViewById(R.id.tv_address);
-        tvTitle = (TextView) view.findViewById(R.id.tv_title);
-        tvSubTitle = (TextView) view.findViewById(R.id.tv_subTitle);
+//        tvAddress = (TextView) view.findViewById(R.id.tv_address);
+//        tvTitle = (TextView) view.findViewById(R.id.tv_title);
+//        tvSubTitle = (TextView) view.findViewById(R.id.tv_subTitle);
 
         mDotEnabled = getResources().getDrawable(R.drawable.active);
         mDotDisabled = getResources().getDrawable(R.drawable.inactive);
 
-        btnFilter.setOnClickListener(this);
+//        btnFilter.setOnClickListener(this);
         btnToggle.setOnClickListener(this);
         btnEnter.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
@@ -230,27 +230,28 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     private void updateUIs(GasStation item) {
 
         selectedGasStation = item;
-        mTopViewPager.removeAllViews();
+//        mTopViewPager.removeAllViews();
         mBottomViewPager.removeAllViews();
         mTopAdapter.removeAll();
         mBottomAdapter.removeAll();
 
         if (item != null) {
-            tvAddress.setText(item.address);
-            tvTitle.setText(item.name);
-            tvSubTitle.setText(item.subTitle);
+//            tvAddress.setText(item.address);
+//            tvTitle.setText(item.name);
+//            tvSubTitle.setText(item.subTitle);
 
-            if (item.photos != null && !item.photos.isEmpty()) {
+            if (item.getPhotos() != null && !item.getPhotos().isEmpty()) {
 
                 int i = 0;
-                for (String photoValue : item.photos) {
+                for (String photoValue : item.getPhotos()) {
                     if (i > 4)
                         break;
                     mTopAdapter.addFragment(ImageFragment.newInstance(photoValue));
                     mBottomAdapter.addFragment(ImageFragment.newInstance(photoValue));
                     i++;
                 }
-                setupTopViewPager(mTopAdapter);
+//                setupTopViewPager(mTopAdapter);
+                mBottomAdapter.notifyDataSetChanged();
                 setupBottomViewPager(mBottomAdapter);
             }
 
@@ -258,27 +259,27 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
 
     }
 
-    private void setupTopViewPager(ViewPagerAdapter adapter) {
-        mTopViewPager.setAdapter(adapter);
-        mTopViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                toggleDotsIndicator(mTopIndicator, position);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        addDotsIndicator(mTopIndicator, adapter.getCount());
-    }
+//    private void setupTopViewPager(ViewPagerAdapter adapter) {
+//        mTopViewPager.setAdapter(adapter);
+//        mTopViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//                toggleDotsIndicator(mTopIndicator, position);
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
+//
+//        addDotsIndicator(mTopIndicator, adapter.getCount());
+//    }
 
     private void setupBottomViewPager(final ViewPagerAdapter adapter) {
         mBottomViewPager.setAdapter(adapter);
@@ -342,9 +343,9 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_filter:
-
-                break;
+//            case R.id.iv_filter:
+//
+//                break;
             case R.id.btn_toggle:
                 toggleUI();
                 break;
@@ -397,6 +398,10 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
         }
     }
 
+    private final String RANK_SEARCH_BY = "distance",
+        PLACE_TYPE = "gas_station";
+
+
 
     private void findNearbyGasStations(Place place) {
         progressBar.setVisibility(View.VISIBLE);
@@ -405,7 +410,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
         mListAdapter.setList(mGasStations);
         String latlng = place.getLatLng().latitude + "," + place.getLatLng().longitude;
 
-        String urlString = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=distance&types=gas_station&key=%s", latlng, getString(R.string.google_server_api_key));
+        String urlString = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=" + RANK_SEARCH_BY +"&types=" + PLACE_TYPE + "&key=%s", latlng, getString(R.string.google_server_api_key));
 
         httpClient.get(getContext(), urlString, new AsyncHttpResponseHandler() {
             @Override
@@ -442,9 +447,9 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
         for (int i = 0; i < list.size(); i++) {
             GasStation item = list.get(i);
             MarkerOptions options = new MarkerOptions();
-            LatLng latLng = new LatLng(item.location.lat, item.location.lng);
+            LatLng latLng = new LatLng(item.getLocation().lat, item.getLocation().lng);
             options.position(latLng);
-            options.title(item.name);
+            options.title(item.getName());
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
 
             Marker marker = mMap.addMarker(options);
@@ -460,7 +465,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     private void getPlacePhotos(final GasStation gasStation) {
 
         progressBar.setVisibility(View.VISIBLE);
-        String placeId = gasStation.place_id;
+        String placeId = gasStation.getPlace_id();
         String urlString = String.format("https://maps.googleapis.com/maps/api/place/details/json?placeid=%s&key=%s", placeId, getString(R.string.google_server_api_key));
         httpClient.get(getContext(), urlString, new AsyncHttpResponseHandler() {
             @Override
@@ -471,14 +476,13 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
                     try {
                         String strResponse = new String(responseBody, "UTF-8");
                         JSONObject jsonObject = new JSONObject(strResponse);
-                        //fixme: crash gdy nie ma zdjęć
                         JSONArray jsonArray = jsonObject.getJSONObject("result").getJSONArray("photos");
                         List<String> photos = new ArrayList<String>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             String path = jsonArray.getJSONObject(i).getString("photo_reference");
                             photos.add(path);
                         }
-                        gasStation.photos = photos;
+                        gasStation.setPhotos(photos);
 
                         FirebaseService.shared.createGasStation(gasStation, new ObjectResultListener() {
                             @Override
@@ -590,7 +594,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     }
 
     private void showUIs(GasStation item) {
-        if (item.photos == null || item.photos.isEmpty()) {
+        if (item.getPhotos() == null || item.getPhotos().isEmpty()) {
             getPlacePhotos(item);
         } else {
             updateUIs(item);

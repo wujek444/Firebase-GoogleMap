@@ -40,6 +40,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public void removeAll() {
         mFragmentList.clear();
+        this.notifyDataSetChanged();
     }
 
 }

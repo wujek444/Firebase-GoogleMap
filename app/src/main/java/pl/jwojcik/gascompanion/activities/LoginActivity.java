@@ -38,7 +38,7 @@ import java.util.Arrays;
 import pl.jwojcik.gascompanion.Constants;
 import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
-import pl.jwojcik.gascompanion.models.CurrentUser;
+import pl.jwojcik.gascompanion.models.CurrentUserService;
 import pl.jwojcik.gascompanion.models.User;
 import pl.jwojcik.gascompanion.services.FirebaseService;
 import pl.jwojcik.gascompanion.services.ObjectResultListener;
@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 public void onResult(boolean isSuccess, String error, Object object) {
                     hideProgressDialog();
                     if (isSuccess) {
-                        CurrentUser.login((User) object);
+                        CurrentUserService.login((User) object);
                         startMainActivity();
                     } else {
                         Toast.makeText(LoginActivity.this, error, Toast.LENGTH_LONG).show();
@@ -218,7 +218,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (!isSuccess) {
                     Toast.makeText(LoginActivity.this, error, Toast.LENGTH_LONG).show();
                 } else {
-                    CurrentUser.login((User) object);
+                    CurrentUserService.login((User) object);
                     startMainActivity();
                 }
             }

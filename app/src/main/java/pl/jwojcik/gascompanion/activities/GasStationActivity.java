@@ -33,10 +33,9 @@ import pl.jwojcik.gascompanion.services.ResultListener;
 public class GasStationActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView btnBack;
-    private ImageView btnInfo;
     private ImageView ivImage;
     private TextView tvTitle;
-    private TextView tvSubTitle;
+//    private TextView tvSubTitle;
     private TextView tvAddress;
     private RecyclerView mRecyclerViewStarters;
     private RecyclerView mRecyclerViewDrinks;
@@ -62,10 +61,9 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         gasStation = bundle.getParcelable("value");
 
         btnBack = (ImageView) findViewById(R.id.iv_back);
-        btnInfo = (ImageView) findViewById(R.id.iv_info);
         ivImage = (ImageView) findViewById(R.id.imageView);
         tvTitle = (TextView) findViewById(R.id.tv_title);
-        tvSubTitle = (TextView) findViewById(R.id.tv_subTitle);
+//        tvSubTitle = (TextView) findViewById(R.id.tv_subTitle);
         tvAddress = (TextView) findViewById(R.id.tv_address);
         mRecyclerViewStarters = (RecyclerView) findViewById(R.id.listview_starter);
         mRecyclerViewDrinks = (RecyclerView) findViewById(R.id.listview_drinks);
@@ -74,7 +72,6 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         btnBack.setOnClickListener(this);
-        btnInfo.setOnClickListener(this);
 
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewStarters.setLayoutManager(layoutManager1);
@@ -107,14 +104,14 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
 
     private void initData() {
         if (gasStation != null) {
-            tvTitle.setText(gasStation.name);
-            tvSubTitle.setText(gasStation.subTitle);
-            tvAddress.setText(gasStation.address);
+            tvTitle.setText(gasStation.getName());
+//            tvSubTitle.setText(gasStation.subTitle);
+            tvAddress.setText(gasStation.getAddress());
 
-            if (gasStation.photos == null || gasStation.photos.isEmpty()) {
+            if (gasStation.getPhotos() == null || gasStation.getPhotos().isEmpty()) {
 
             } else {
-                String photoValue = gasStation.photos.get(0);
+                String photoValue = gasStation.getPhotos().get(0);
                 String photoUrl = String.format("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=%s&key=%s", photoValue, getString(R.string.google_server_api_key));
                 MyApplication.mImageLoader.displayImage(photoUrl, ivImage, new ImageLoadingListener() {
                     @Override
@@ -192,9 +189,6 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.iv_back:
                 finish();
-                break;
-            case R.id.iv_info:
-
                 break;
         }
     }

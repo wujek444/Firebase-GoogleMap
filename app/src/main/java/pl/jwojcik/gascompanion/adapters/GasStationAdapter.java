@@ -57,11 +57,9 @@ public class GasStationAdapter extends ArrayAdapter<GasStation> {
             holder = (ViewHolder) convertView.getTag();
         }
         GasStation item = getItem(position);
-        holder.tvName.setText(item.name);
-        if (StringUtils.isNotEmpty(item.address))
-            holder.tvAddress.setText(item.address);
-        if (StringUtils.isNotEmpty(item.subTitle))
-            holder.tvSubTitle.setText(item.subTitle);
+        holder.tvName.setText(item.getName());
+        if (StringUtils.isNotEmpty(item.getAddress()))
+            holder.tvAddress.setText(item.getAddress());
 
         return convertView;
     }
@@ -69,12 +67,10 @@ public class GasStationAdapter extends ArrayAdapter<GasStation> {
     private class ViewHolder {
         public TextView tvName;
         public TextView tvAddress;
-        public TextView tvSubTitle;
 
         public ViewHolder(View view) {
             tvName = (TextView) view.findViewById(R.id.tv_name);
             tvAddress = (TextView) view.findViewById(R.id.tv_address);
-            tvSubTitle = (TextView) view.findViewById(R.id.tv_subTitle);
         }
     }
 

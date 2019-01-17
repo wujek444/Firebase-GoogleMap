@@ -53,4 +53,31 @@ public class User extends Object {
         return result;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public String getLoginType() {
+        return loginType;
+    }
 }

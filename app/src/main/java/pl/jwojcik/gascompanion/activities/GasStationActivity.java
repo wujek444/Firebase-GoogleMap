@@ -3,10 +3,12 @@ package pl.jwojcik.gascompanion.activities;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,7 +22,8 @@ import java.util.List;
 import pl.jwojcik.gascompanion.Constants;
 import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
-import pl.jwojcik.gascompanion.adapters.FoodAdapter;
+import pl.jwojcik.gascompanion.adapters.GasPriceAdapter;
+import pl.jwojcik.gascompanion.fragments.DialogFragment;
 import pl.jwojcik.gascompanion.models.Food;
 import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.services.FirebaseService;
@@ -35,12 +38,17 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
     private ImageView btnBack;
     private ImageView ivImage;
     private TextView tvTitle;
-//    private TextView tvSubTitle;
     private TextView tvAddress;
-    private RecyclerView mRecyclerViewStarters;
-    private RecyclerView mRecyclerViewDrinks;
-    private RecyclerView mRecyclerViewDishes;
-    private RecyclerView mRecyclerViewDesserts;
+
+    private Button addPB95Btn;
+    private Button addPB98Btn;
+    private Button addONBtn;
+    private Button addLPGBtn;
+
+    private RecyclerView mRecyclerViewPB95;
+    private RecyclerView mRecyclerViewPB98;
+    private RecyclerView mRecyclerViewON;
+    private RecyclerView mRecyclerViewLPG;
     private ProgressBar progressBar;
 
     private List<Food> mStarters;
@@ -60,27 +68,39 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         Bundle bundle = getIntent().getExtras();
         gasStation = bundle.getParcelable("value");
 
-        btnBack = (ImageView) findViewById(R.id.iv_back);
-        ivImage = (ImageView) findViewById(R.id.imageView);
-        tvTitle = (TextView) findViewById(R.id.tv_title);
-//        tvSubTitle = (TextView) findViewById(R.id.tv_subTitle);
-        tvAddress = (TextView) findViewById(R.id.tv_address);
-        mRecyclerViewStarters = (RecyclerView) findViewById(R.id.listview_starter);
-        mRecyclerViewDrinks = (RecyclerView) findViewById(R.id.listview_drinks);
-        mRecyclerViewDishes = (RecyclerView) findViewById(R.id.listview_dishes);
-        mRecyclerViewDesserts = (RecyclerView) findViewById(R.id.listview_desserts);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        btnBack = findViewById(R.id.iv_back);
+        ivImage = findViewById(R.id.imageView);
+        tvTitle = findViewById(R.id.tv_title);
+        tvAddress = findViewById(R.id.tv_address);
+
+        addPB95Btn = findViewById(R.id.btn_add_pb95);
+        addPB98Btn = findViewById(R.id.btn_add_pb98);
+        addONBtn = findViewById(R.id.btn_add_on);
+        addLPGBtn = findViewById(R.id.btn_add_lpg);
+
+        addPB95Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
+
+        mRecyclerViewPB95 = findViewById(R.id.listview_pb95);
+        mRecyclerViewPB98 = findViewById(R.id.listview_pb98);
+        mRecyclerViewON = findViewById(R.id.listview_on);
+        mRecyclerViewLPG = findViewById(R.id.listview_lpg);
+        progressBar = findViewById(R.id.progressBar);
 
         btnBack.setOnClickListener(this);
 
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerViewStarters.setLayoutManager(layoutManager1);
+        mRecyclerViewPB95.setLayoutManager(layoutManager1);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerViewDrinks.setLayoutManager(layoutManager2);
+        mRecyclerViewPB98.setLayoutManager(layoutManager2);
         LinearLayoutManager layoutManager3 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerViewDishes.setLayoutManager(layoutManager3);
+        mRecyclerViewON.setLayoutManager(layoutManager3);
         LinearLayoutManager layoutManager4 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerViewDesserts.setLayoutManager(layoutManager4);
+        mRecyclerViewLPG.setLayoutManager(layoutManager4);
 
         initData();
         loadData();
@@ -105,7 +125,6 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
     private void initData() {
         if (gasStation != null) {
             tvTitle.setText(gasStation.getName());
-//            tvSubTitle.setText(gasStation.subTitle);
             tvAddress.setText(gasStation.getAddress());
 
             if (gasStation.getPhotos() == null || gasStation.getPhotos().isEmpty()) {
@@ -163,17 +182,17 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
                         }
                     }
 
-                    FoodAdapter startersAdapter = new FoodAdapter(GasStationActivity.this, mStarters);
-                    mRecyclerViewStarters.setAdapter(startersAdapter);
+                    GasPriceAdapter startersAdapter = new GasPriceAdapter(GasStationActivity.this, mStarters);
+                    mRecyclerViewPB95.setAdapter(startersAdapter);
 
-                    FoodAdapter drinksAdapter = new FoodAdapter(GasStationActivity.this, mDrinks);
-                    mRecyclerViewDrinks.setAdapter(drinksAdapter);
+                    GasPriceAdapter drinksAdapter = new GasPriceAdapter(GasStationActivity.this, mDrinks);
+                    mRecyclerViewPB98.setAdapter(drinksAdapter);
 
-                    FoodAdapter dishesAdapter = new FoodAdapter(GasStationActivity.this, mDishes);
-                    mRecyclerViewDishes.setAdapter(dishesAdapter);
+                    GasPriceAdapter dishesAdapter = new GasPriceAdapter(GasStationActivity.this, mDishes);
+                    mRecyclerViewON.setAdapter(dishesAdapter);
 
-                    FoodAdapter dessertsAdapter = new FoodAdapter(GasStationActivity.this, mDesserts);
-                    mRecyclerViewDesserts.setAdapter(dessertsAdapter);
+                    GasPriceAdapter dessertsAdapter = new GasPriceAdapter(GasStationActivity.this, mDesserts);
+                    mRecyclerViewLPG.setAdapter(dessertsAdapter);
 
                 }
 
@@ -191,5 +210,12 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
         }
+    }
+
+    private void showDialog(){
+        FragmentManager fm = getSupportFragmentManager();
+        DialogFragment editNameDialogFragment = DialogFragment.newInstance("Some Title");
+        editNameDialogFragment.show(fm, "fragment_edit_name");
+
     }
 }

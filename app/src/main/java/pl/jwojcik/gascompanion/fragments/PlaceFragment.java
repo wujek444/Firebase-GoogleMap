@@ -3,9 +3,11 @@ package pl.jwojcik.gascompanion.fragments;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -23,7 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,6 +32,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -75,23 +77,19 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
 
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1001;
     private final int PERMISSIONS_REQUEST_FINE_LOCATION = 2001;
+    private final String RANK_SEARCH_BY = "distance";
+    private final String PLACE_TYPE = "gas_station";
+
 
     private View view;
     private ScrollView mScrollView;
-    private ImageView btnFilter;
     private Button btnSearch;
     private Button btnToggle;
     private ListView listView;
     private Button btnEnter;
-    private ViewPager mTopViewPager;
     private ViewPager mBottomViewPager;
-    private LinearLayout mTopIndicator;
     private LinearLayout mBottomIndicator;
     private ProgressBar progressBar;
-    private TextView tvAddress;
-    private TextView tvTitle;
-    private TextView tvSubTitle;
-//    private FrameLayout layoutTop;
     private FrameLayout layoutBottom;
 
     private GoogleMap mMap;
@@ -142,27 +140,18 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
 
     private void initView() {
 
-        mScrollView = (ScrollView) view.findViewById(R.id.layout_scrollView);
-//        layoutTop = (FrameLayout) view.findViewById(R.id.layout_top);
-        layoutBottom = (FrameLayout) view.findViewById(R.id.layout_bottom);
-//        mTopViewPager = (ViewPager) view.findViewById(R.id.viewPager_top);
-        mBottomViewPager = (ViewPager) view.findViewById(R.id.viewPager_bottom);
-//        mTopIndicator = (LinearLayout) view.findViewById(R.id.indicator_top);
-        mBottomIndicator = (LinearLayout) view.findViewById(R.id.indicator_bottom);
-//        btnFilter = (ImageView) view.findViewById(R.id.iv_filter);
-        btnSearch = (Button) view.findViewById(R.id.btn_search);
-        btnToggle = (Button) view.findViewById(R.id.btn_toggle);
-        btnEnter = (Button) view.findViewById(R.id.btn_enter);
-        listView = (ListView) view.findViewById(R.id.listView);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-//        tvAddress = (TextView) view.findViewById(R.id.tv_address);
-//        tvTitle = (TextView) view.findViewById(R.id.tv_title);
-//        tvSubTitle = (TextView) view.findViewById(R.id.tv_subTitle);
-
+        mScrollView = view.findViewById(R.id.layout_scrollView);
+        layoutBottom = view.findViewById(R.id.layout_bottom);
+        mBottomViewPager = view.findViewById(R.id.viewPager_bottom);
+        mBottomIndicator = view.findViewById(R.id.indicator_bottom);
+        btnSearch = view.findViewById(R.id.btn_search);
+        btnToggle = view.findViewById(R.id.btn_toggle);
+        btnEnter = view.findViewById(R.id.btn_enter);
+        listView = view.findViewById(R.id.listView);
+        progressBar = view.findViewById(R.id.progressBar);
         mDotEnabled = getResources().getDrawable(R.drawable.active);
         mDotDisabled = getResources().getDrawable(R.drawable.inactive);
 
-//        btnFilter.setOnClickListener(this);
         btnToggle.setOnClickListener(this);
         btnEnter.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
@@ -186,13 +175,6 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
                         return;
                     }
                     mMap.setMyLocationEnabled(true);
@@ -230,16 +212,11 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     private void updateUIs(GasStation item) {
 
         selectedGasStation = item;
-//        mTopViewPager.removeAllViews();
         mBottomViewPager.removeAllViews();
         mTopAdapter.removeAll();
         mBottomAdapter.removeAll();
 
         if (item != null) {
-//            tvAddress.setText(item.address);
-//            tvTitle.setText(item.name);
-//            tvSubTitle.setText(item.subTitle);
-
             if (item.getPhotos() != null && !item.getPhotos().isEmpty()) {
 
                 int i = 0;
@@ -250,7 +227,6 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
                     mBottomAdapter.addFragment(ImageFragment.newInstance(photoValue));
                     i++;
                 }
-//                setupTopViewPager(mTopAdapter);
                 mBottomAdapter.notifyDataSetChanged();
                 setupBottomViewPager(mBottomAdapter);
             }
@@ -258,28 +234,6 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
         }
 
     }
-
-//    private void setupTopViewPager(ViewPagerAdapter adapter) {
-//        mTopViewPager.setAdapter(adapter);
-//        mTopViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                toggleDotsIndicator(mTopIndicator, position);
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
-//
-//        addDotsIndicator(mTopIndicator, adapter.getCount());
-//    }
 
     private void setupBottomViewPager(final ViewPagerAdapter adapter) {
         mBottomViewPager.setAdapter(adapter);
@@ -343,9 +297,6 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//            case R.id.iv_filter:
-//
-//                break;
             case R.id.btn_toggle:
                 toggleUI();
                 break;
@@ -398,24 +349,17 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
         }
     }
 
-    private final String RANK_SEARCH_BY = "distance",
-        PLACE_TYPE = "gas_station";
-
-
-
-    private void findNearbyGasStations(Place place) {
+    private void findNearbyGasStations(String latlng) {
         progressBar.setVisibility(View.VISIBLE);
         mMap.clear();
         mGasStations.clear();
         mListAdapter.setList(mGasStations);
-        String latlng = place.getLatLng().latitude + "," + place.getLatLng().longitude;
 
         String urlString = String.format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&rankby=" + RANK_SEARCH_BY +"&types=" + PLACE_TYPE + "&key=%s", latlng, getString(R.string.google_server_api_key));
 
         httpClient.get(getContext(), urlString, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
                 if (statusCode == 200) {
                     try {
                         String strResponse = new String(responseBody, "UTF-8");
@@ -425,13 +369,8 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
                         e.printStackTrace();
                     }
                 }
-
                 showNearbyPlaces(mGasStations);
                 mListAdapter.setList(mGasStations);
-//                if (!mGasStations.isEmpty()) {
-//                    GasStation item = mGasStations.get(0);
-//                    showUIs(item);
-//                }
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -440,6 +379,12 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
 
             }
         });
+    }
+
+
+    private void findNearbyGasStations(Place place) {
+        String latlng = place.getLatLng().latitude + "," + place.getLatLng().longitude;
+        findNearbyGasStations(latlng);
     }
 
     private void showNearbyPlaces(List<GasStation> list) {
@@ -530,16 +475,20 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             PermissionUtils.requestPermissions(getActivity(), PERMISSIONS_REQUEST_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
             return;
         }
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener(){
+            @SuppressLint("MissingPermission")
+            @Override
+            public boolean onMyLocationButtonClick() {
+                Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                if(lastLocation != null){
+                    findNearbyGasStations(lastLocation.getLatitude() + "," + lastLocation.getLongitude());
+                }
+                return false;
+            }
+        });
         mMap.setMyLocationEnabled(true);
     }
 

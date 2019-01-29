@@ -19,7 +19,7 @@ import pl.jwojcik.gascompanion.models.Food;
  * Created by king on 18/08/2017.
  */
 
-public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
+public class GasPriceAdapter extends RecyclerView.Adapter<GasPriceAdapter.ViewHolder> {
 
     private List<Food> dataList;
     private Context mContext;
@@ -38,7 +38,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
             R.drawable.bg_drinks_4
     };
 
-    public FoodAdapter(Context context, List<Food> list) {
+    public GasPriceAdapter(Context context, List<Food> list) {
         super();
         this.mContext = context;
         this.dataList = list;
@@ -46,7 +46,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_food, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gas_price, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -95,10 +95,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
         public ViewHolder(View view) {
             super(view);
-            imageView = (ImageView) view.findViewById(R.id.iv_food);
-            tvName = (TextView) view.findViewById(R.id.tv_name);
-            tvPrice = (TextView) view.findViewById(R.id.tv_price);
-            progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+            imageView = view.findViewById(R.id.iv_food);
+            tvName = view.findViewById(R.id.tv_name);
+            tvPrice = view.findViewById(R.id.tv_price);
+            progressBar = view.findViewById(R.id.progressBar);
         }
     }
 

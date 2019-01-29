@@ -65,70 +65,124 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/yellow_1"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="PB95"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/yellow_1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="PB95"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+            <Button
+                android:id="@+id/btn_add_pb95"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:background="@drawable/btn_toggle"
+                android:text="Dodaj"
+                android:textColor="@color/white" />
+        </FrameLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/listview_starter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/yellow_1"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="PB98"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/listview_drinks"
+            android:id="@+id/listview_pb95"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/yellow_1"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="Diesel"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/yellow_1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="PB98"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/btn_add_pb98"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:background="@drawable/btn_toggle"
+                android:text="Dodaj"
+                android:textColor="@color/white" />
+        </FrameLayout>
+
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/listview_dishes"
+            android:id="@+id/listview_pb98"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/yellow_1"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="LPG"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/yellow_1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="ON"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+            <Button
+                android:id="@+id/btn_add_on"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:background="@drawable/btn_toggle"
+                android:text="Dodaj"
+                android:textColor="@color/white" />
+
+        </FrameLayout>
+
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/listview_desserts"
+            android:id="@+id/listview_on"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/yellow_1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="LPG"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+            <Button
+                android:id="@+id/btn_add_lpg"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:background="@drawable/btn_toggle"
+                android:text="Dodaj"
+                android:textColor="@color/white" />
+        </FrameLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listview_lpg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

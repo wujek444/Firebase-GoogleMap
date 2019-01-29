@@ -35,6 +35,11 @@ import pl.jwojcik.gascompanion.services.ResultListener;
 
 public class GasStationActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private final String PB95_GAS_TYPE = "PB95";
+    private final String PB98_GAS_TYPE = "PB98";
+    private final String ON_GAS_TYPE = "ON";
+    private final String LPG_GAS_TYPE = "LPG";
+
     private ImageView btnBack;
     private ImageView ivImage;
     private TextView tvTitle;
@@ -81,7 +86,25 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         addPB95Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                showDialog(PB95_GAS_TYPE);
+            }
+        });
+        addPB98Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(PB98_GAS_TYPE);
+            }
+        });
+        addONBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(ON_GAS_TYPE);
+            }
+        });
+        addLPGBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(LPG_GAS_TYPE);
             }
         });
 
@@ -212,9 +235,9 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void showDialog(){
+    private void showDialog(String gasType){
         FragmentManager fm = getSupportFragmentManager();
-        DialogFragment editNameDialogFragment = DialogFragment.newInstance("Some Title");
+        DialogFragment editNameDialogFragment = DialogFragment.newInstance("Dodaj cenę " + gasType);
         editNameDialogFragment.show(fm, "fragment_edit_name");
 
     }

@@ -51,8 +51,8 @@ public class GasPriceAdapter extends RecyclerView.Adapter<GasPriceAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         final Food item = dataList.get(position);
-        holder.tvName.setText(item.name);
-        holder.tvPrice.setText(String.format("%.0f%s", item.price, item.currencyType));
+        holder.tvName.setText(item.getName());
+        holder.tvPrice.setText(String.format("%.0f%s", item.getPrice(), item.getCurrencyType()));
 
         Random random = new Random();
         int resourceId = random.nextInt(11);

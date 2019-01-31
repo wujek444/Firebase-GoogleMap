@@ -139,17 +139,17 @@ public class FirebaseService {
         if (isNewId) {
             if (isLoggedIn()) {
                 newId = firebaseAuth.getCurrentUser().getUid();
-                user.uid = newId;
+                user.setUid(newId);
             } else {
                 newId = usersRef.push().getKey();
-                user.uid = newId;
+                user.setUid(newId);
             }
         } else {
-            newId = user.uid;
+            newId = user.getUid();
         }
         usersRef.child(newId).child(KEY_DETAILS).setValue(user.firebaseDetails());
-        if (user.image != null) {
-            uploadUserPhoto(user.image, newId);
+        if (user.getImage() != null) {
+            uploadUserPhoto(user.getImage(), newId);
         }
     }
 
@@ -194,7 +194,7 @@ public class FirebaseService {
                     public void onResult(boolean isSuccess, String error, Bitmap bitmap) {
                         if (isSuccess) {
                             if (bitmap != null)
-                                user.image = bitmap;
+                                user.setImage(bitmap);
                         }
                         listener.onResult(true, null, user);
                     }
@@ -242,14 +242,14 @@ public class FirebaseService {
         String newId;
         if (withNewId) {
             newId = foodsRef.push().getKey();
-            food.id = newId;
+            food.setId(newId);
         } else {
-            newId = food.id;
+            newId = food.getId();
         }
         foodsRef.child(newId).setValue(food.firebaseDetails());
-        if (food.image != null) {
+        if (food.getImage() != null) {
             StorageReference imageRef = storageRef.child("foods").child(newId).child("photo");
-            uploadPhoto(food.image, imageRef);
+            uploadPhoto(food.getImage(), imageRef);
         }
     }
 

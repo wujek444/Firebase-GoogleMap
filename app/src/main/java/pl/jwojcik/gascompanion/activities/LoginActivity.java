@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                         @Override
                                         public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                                            mUser.image = bitmap;
+                                            mUser.setImage(bitmap);
                                             handleFacebookAccessToken(loginResult.getAccessToken());
                                         }
 

@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import pl.jwojcik.gascompanion.R;
-import pl.jwojcik.gascompanion.models.GasType;
+import pl.jwojcik.gascompanion.enumerated.GasType;
 import pl.jwojcik.gascompanion.models.Price;
 import pl.jwojcik.gascompanion.services.FirebaseService;
 import pl.jwojcik.gascompanion.services.ObjectResultListener;
@@ -59,6 +59,8 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
         pricePerLitreEditText.requestFocus();
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
+
+        //fixme: cena zapisywana jako dziecko gasStation
         priceEntrySubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

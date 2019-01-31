@@ -1,4 +1,4 @@
-package pl.jwojcik.gascompanion.models;
+package pl.jwojcik.gascompanion.enumerated;
 
 public enum GasType {
 

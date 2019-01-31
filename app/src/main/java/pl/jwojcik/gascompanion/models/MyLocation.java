@@ -3,14 +3,15 @@ package pl.jwojcik.gascompanion.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class MyLocation extends Object implements Parcelable {
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    public double lat;
-    public double lng;
+@Data
+@NoArgsConstructor
+public class MyLocation implements Parcelable {
 
-    public MyLocation() {
-
-    }
+    private double lat;
+    private double lng;
 
     public MyLocation(double lat, double lng) {
         this.lat = lat;

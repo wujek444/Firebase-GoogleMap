@@ -191,11 +191,11 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
                 if (isSuccess) {
                     for (int i = 0; i < data.size(); i ++) {
                         Food food = (Food) data.get(i);
-                        if (food.type.equals(Constants.TYPE_STARTERS)) {
+                        if (food.getType().equals(Constants.TYPE_STARTERS)) {
                             mStarters.add(food);
-                        } else if (food.type.equals(Constants.TYPE_DRINKS)) {
+                        } else if (food.getType().equals(Constants.TYPE_DRINKS)) {
                             mDrinks.add(food);
-                        } else if (food.type.equals(Constants.TYPE_DISHES)){
+                        } else if (food.getType().equals(Constants.TYPE_DISHES)){
                             mDishes.add(food);
                         } else {
                             mDesserts.add(food);

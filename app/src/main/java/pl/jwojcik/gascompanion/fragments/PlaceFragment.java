@@ -388,7 +388,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
         for (int i = 0; i < list.size(); i++) {
             GasStation item = list.get(i);
             MarkerOptions options = new MarkerOptions();
-            LatLng latLng = new LatLng(item.getLocation().lat, item.getLocation().lng);
+            LatLng latLng = new LatLng(item.getLocation().getLat(), item.getLocation().getLng());
             options.position(latLng);
             options.title(item.getName());
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));

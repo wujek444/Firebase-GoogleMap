@@ -5,20 +5,20 @@ import android.text.TextUtils;
 
 import java.util.HashMap;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 public class User extends Object {
 
-    public String uid;
-    public String name;
-    public String email;
-    public String gender;
-    public String birthday;
-    public Bitmap image;
-    public String loginType;
-
-    public User() {
-
-    }
+    private String uid;
+    private String name;
+    private String email;
+    private String gender;
+    private String birthday;
+    private Bitmap image;
+    private String loginType;
 
     public User(String email, String loginType) {
         this.email = email;
@@ -48,33 +48,5 @@ public class User extends Object {
         result.put("uid", uid);
 
         return result;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public String getLoginType() {
-        return loginType;
     }
 }

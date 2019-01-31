@@ -29,10 +29,10 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_reset);
 
         auth = FirebaseAuth.getInstance();
-        textEmail = (EditText) findViewById(R.id.email);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        Button btnReset = (Button) findViewById(R.id.btn_reset_password);
-        Button btnBack = (Button) findViewById(R.id.btn_back);
+        textEmail = findViewById(R.id.email);
+        progressBar = findViewById(R.id.progressBar);
+        Button btnReset = findViewById(R.id.btn_reset_password);
+        Button btnBack = findViewById(R.id.btn_back);
         btnReset.setOnClickListener(this);
         btnBack.setOnClickListener(this);
     }

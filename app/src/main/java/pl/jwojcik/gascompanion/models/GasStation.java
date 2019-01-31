@@ -11,7 +11,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 public class GasStation extends Object implements Parcelable {
 
     private String id;
@@ -26,11 +30,7 @@ public class GasStation extends Object implements Parcelable {
     private List<Double> pb95Price;
     private List<Double> pb98Price;
     private List<Double> dieselPrice;
-    public List<Double> lpgPrice;
-
-    public GasStation() {
-
-    }
+    private List<Double> lpgPrice;
 
     public GasStation(String name, String subTitle, String description, String address, MyLocation location) {
         this.name = name;
@@ -51,7 +51,7 @@ public class GasStation extends Object implements Parcelable {
             address = jsonObject.getString("vicinity");
             JSONArray jsonArray = jsonObject.getJSONArray("types");
             subTitle = "";
-            for (int i = 0; i < jsonArray.length(); i ++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 subTitle += jsonArray.get(i).toString() + " & ";
             }
             if (subTitle.length() > 0)
@@ -125,101 +125,5 @@ public class GasStation extends Object implements Parcelable {
             result.put("photos", photos);
 
         return result;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSubTitle() {
-        return subTitle;
-    }
-
-    public void setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public MyLocation getLocation() {
-        return location;
-    }
-
-    public void setLocation(MyLocation location) {
-        this.location = location;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPlace_id() {
-        return place_id;
-    }
-
-    public void setPlace_id(String place_id) {
-        this.place_id = place_id;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public List<String> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
-    }
-
-    public List<Double> getPb95Price() {
-        return pb95Price;
-    }
-
-    public void setPb95Price(List<Double> pb95Price) {
-        this.pb95Price = pb95Price;
-    }
-
-    public List<Double> getPb98Price() {
-        return pb98Price;
-    }
-
-    public void setPb98Price(List<Double> pb98Price) {
-        this.pb98Price = pb98Price;
-    }
-
-    public List<Double> getDieselPrice() {
-        return dieselPrice;
-    }
-
-    public void setDieselPrice(List<Double> dieselPrice) {
-        this.dieselPrice = dieselPrice;
     }
 }

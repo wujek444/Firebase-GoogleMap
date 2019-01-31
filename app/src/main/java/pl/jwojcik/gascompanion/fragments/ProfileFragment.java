@@ -85,14 +85,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         User user = CurrentUserService.getLoggedUser();
         try {
-            if (!TextUtils.isEmpty(user.name)) {
-                tvName.setText(user.name);
+            if (!TextUtils.isEmpty(user.getName())) {
+                tvName.setText(user.getName());
             }
-            if (user.image != null) {
-                ivAvatar.setImageBitmap(user.image);
+            if (user.getImage() != null) {
+                ivAvatar.setImageBitmap(user.getImage());
             }
 
-            if (user.loginType == Constants.TYPE_FACEBOOK) {
+            if (user.getLoginType() == Constants.TYPE_FACEBOOK) {
                 btnResetPassword.setVisibility(View.GONE);
             } else {
                 btnResetPassword.setVisibility(View.VISIBLE);

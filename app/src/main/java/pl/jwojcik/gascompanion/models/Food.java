@@ -5,25 +5,26 @@ import android.text.TextUtils;
 
 import java.util.HashMap;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class Food extends Object {
 
-    public String id;
-    public String name;
-    public double price;
-    public Bitmap image;
-    public String type;
-    public String currencyType;
-
-    public Food() {
-
-    }
+    private String id;
+    private String name;
+    private double price;
+    private Bitmap image;
+    private String type;
+    private String currencyType;
 
     public Food(String id, String name, String type, double price, String currencyType) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.type = type;
-        this.currencyType = currencyType;
+        this.setId(id);
+        this.setName(name);
+        this.setPrice(price);
+        this.setType(type);
+        this.setCurrencyType(currencyType);
     }
 
     public HashMap<String, Object> firebaseDetails() {

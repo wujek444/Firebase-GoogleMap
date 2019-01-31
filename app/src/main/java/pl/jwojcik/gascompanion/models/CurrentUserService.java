@@ -20,7 +20,7 @@ public class CurrentUserService {
     }
 
     public static void setProfileImage(Bitmap bitmap) {
-        shared.user.image = bitmap;
+        shared.user.setImage(bitmap);
     }
 
     public static User getLoggedUser(){

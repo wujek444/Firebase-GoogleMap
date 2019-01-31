@@ -16,9 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import pl.jwojcik.gascompanion.R;
 
-/**
- * Created by king on 17/08/2017.
- */
 
 public class ResetPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 

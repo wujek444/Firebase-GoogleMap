@@ -10,9 +10,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import pl.jwojcik.gascompanion.services.GoogleApiHelper;
 
-/**
- * Created by king on 17/08/2017.
- */
 
 public class MyApplication extends Application {
 

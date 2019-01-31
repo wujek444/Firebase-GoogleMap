@@ -6,28 +6,30 @@
     android:padding="25dp">
 
     <TextView
-        android:id="@+id/lbl_your_name"
-        android:text="Cena za litr (zł)"
+        android:id="@+id/pricePerLitreTextView"
+        android:text="@string/price_per_litre_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/txt_your_name"
+        android:id="@+id/pricePerLitreEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:imeOptions="actionDone"
         android:digits="0123456789.,"/>
     <TextView
-        android:id="@+id/xxx"
-        android:text="Data"
+        android:id="@+id/priceEntryDateTextView"
+        android:text="@string/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <DatePicker
+        android:id="@+id/priceEntryDatePicker"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></DatePicker>
+        android:layout_height="wrap_content"/>
     <Button
+        android:id="@+id/priceEntrySubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dodaj"/>
+        android:text="@string/add"/>
 </LinearLayout>

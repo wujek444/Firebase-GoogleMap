@@ -15,10 +15,6 @@ import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.services.FirebaseService;
 import pl.jwojcik.gascompanion.services.ObjectResultListener;
 
-/**
- * Created by king on 17/08/2017.
- */
-
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText textEmail;

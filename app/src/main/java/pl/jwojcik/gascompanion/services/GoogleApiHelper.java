@@ -13,10 +13,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 
-/**
- * Created by king on 19/08/2017.
- */
-
 public class GoogleApiHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = GoogleApiHelper.class.getSimpleName();
     Context context;

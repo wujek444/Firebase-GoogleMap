@@ -43,10 +43,6 @@ import pl.jwojcik.gascompanion.models.User;
 import pl.jwojcik.gascompanion.services.FirebaseService;
 import pl.jwojcik.gascompanion.services.ObjectResultListener;
 
-/**
- * Created by king on 17/08/2017.
- */
-
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "FacebookLogin";

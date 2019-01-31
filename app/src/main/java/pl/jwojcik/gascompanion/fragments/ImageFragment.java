@@ -16,9 +16,6 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
 
-/**
- * Created by king on 18/08/2017.
- */
 
 public class ImageFragment extends Fragment {
 

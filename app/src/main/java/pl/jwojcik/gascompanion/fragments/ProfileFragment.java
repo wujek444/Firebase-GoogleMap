@@ -26,9 +26,6 @@ import pl.jwojcik.gascompanion.activities.ResetPasswordActivity;
 import pl.jwojcik.gascompanion.models.CurrentUserService;
 import pl.jwojcik.gascompanion.models.User;
 
-/**
- * Created by king on 17/08/2017.
- */
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 

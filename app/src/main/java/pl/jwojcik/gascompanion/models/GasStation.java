@@ -11,9 +11,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by king on 18/08/2017.
- */
 
 public class GasStation extends Object implements Parcelable {
 

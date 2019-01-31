@@ -1,9 +1,5 @@
 package pl.jwojcik.gascompanion;
 
-/**
- * Created by king on 18/08/2017.
- */
-
 public interface Constants {
 
     public static final String TYPE_STARTERS = "Starters";

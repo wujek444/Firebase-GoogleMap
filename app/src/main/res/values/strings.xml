@@ -52,5 +52,8 @@
 
     <string name="list_string">Lista</string>
     <string name="map_string">Mapa</string>
+    <string name="price_per_litre_label">Cena za litr (zł)</string>
+    <string name="date">Data</string>
+    <string name="add">Dodaj</string>
 
 </resources>

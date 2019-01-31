@@ -16,9 +16,6 @@ import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.utils.StringUtils;
 
-/**
- * Created by king on 19/08/2017.
- */
 
 public class GasStationAdapter extends ArrayAdapter<GasStation> {
 

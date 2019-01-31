@@ -20,6 +20,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +30,9 @@ import pl.jwojcik.gascompanion.Constants;
 import pl.jwojcik.gascompanion.models.CurrentUserService;
 import pl.jwojcik.gascompanion.models.Food;
 import pl.jwojcik.gascompanion.models.GasStation;
+import pl.jwojcik.gascompanion.models.Price;
 import pl.jwojcik.gascompanion.models.User;
 
-/**
- * Created by king on 18/08/2017.
- */
 
 public class FirebaseService {
 
@@ -42,10 +42,12 @@ public class FirebaseService {
     private static final String KEY_FOODS = "foods";
     private static final String KEY_DETAILS = "details";
     private static final String KEY_PHOTO = "photo";
+    private static final String KEY_PRICES = "prices";
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usersRef;
     private DatabaseReference gasStationsRef;
+    private DatabaseReference pricesRef;
     private DatabaseReference foodsRef;
     private StorageReference storageRef;
 
@@ -53,6 +55,7 @@ public class FirebaseService {
         firebaseAuth = FirebaseAuth.getInstance();
         usersRef = FirebaseDatabase.getInstance().getReference(KEY_USERS);
         gasStationsRef = FirebaseDatabase.getInstance().getReference(KEY_GAS_STATIONS);
+        pricesRef = FirebaseDatabase.getInstance().getReference(KEY_PRICES);
         foodsRef = FirebaseDatabase.getInstance().getReference(KEY_FOODS);
         storageRef = FirebaseStorage.getInstance().getReference();
     }
@@ -229,6 +232,11 @@ public class FirebaseService {
         listener.onResult(true, null, null);
     }
 
+    public void createPrice(Price price, ObjectResultListener listener){
+        pricesRef.child(generateRandomId()).setValue(price);
+        listener.onResult(true, null, null);
+    }
+
     public void createFood(Food food, boolean withNewId, ObjectResultListener listener) {
 
         String newId;
@@ -284,6 +292,10 @@ public class FirebaseService {
                 listener.onResult(false, databaseError.getMessage(), null);
             }
         });
+    }
+
+    public String generateRandomId(){
+        return RandomStringUtils.randomAlphanumeric(20).toUpperCase();
     }
 
 }

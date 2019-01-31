@@ -7,18 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import pl.jwojcik.gascompanion.R;
+import pl.jwojcik.gascompanion.models.GasType;
+import pl.jwojcik.gascompanion.models.Price;
+import pl.jwojcik.gascompanion.services.FirebaseService;
+import pl.jwojcik.gascompanion.services.ObjectResultListener;
 
 public class DialogFragment extends android.support.v4.app.DialogFragment {
 
-    private EditText mEditText;
+    private EditText pricePerLitreEditText;
+    private DatePicker priceEntryDatePicker;
+    private Button priceEntrySubmitBtn;
+
+    private static FirebaseService firebaseService = FirebaseService.shared;
 
     public DialogFragment() {
-        // Empty constructor is required for DialogFragment
-        // Make sure not to add arguments to the constructor
-        // Use `newInstance` instead as shown below
+        //wymagany pusty konstruktor
     }
 
     public static DialogFragment newInstance(String title) {
@@ -38,15 +47,36 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get field from view
-        mEditText = view.findViewById(R.id.txt_your_name);
-        // Fetch arguments from bundle and set title
-        String title = getArguments().getString("title", "Enter Name");
+
+        pricePerLitreEditText = view.findViewById(R.id.pricePerLitreEditText);
+        priceEntryDatePicker = view.findViewById(R.id.priceEntryDatePicker);
+        priceEntrySubmitBtn = view.findViewById(R.id.priceEntrySubmit);
+
+        String title = getArguments().getString("title");
         getDialog().setTitle(title);
-        // Show soft keyboard automatically and request focus to field
-        mEditText.requestFocus();
-        getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        //ustaw focus i włącz klawiaturę ekranową
+        pricePerLitreEditText.requestFocus();
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        priceEntrySubmitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Price newPrice = new Price(Double.parseDouble(pricePerLitreEditText.getText().toString()), GasType.PB95);
+                firebaseService.createPrice(newPrice, new ObjectResultListener() {
+                    @Override
+                    public void onResult(boolean isSuccess, String error, Object object) {
+                        if(isSuccess){
+                            Toast.makeText(getActivity(), "Dodano cenę", Toast.LENGTH_LONG).show();
+                            getActivity().finish();
+                        } else {
+                            Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+            }
+        });
     }
 
 }

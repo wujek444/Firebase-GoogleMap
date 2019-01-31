@@ -29,9 +29,6 @@ import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.services.FirebaseService;
 import pl.jwojcik.gascompanion.services.ResultListener;
 
-/**
- * Created by king on 17/08/2017.
- */
 
 public class GasStationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -239,6 +236,5 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         FragmentManager fm = getSupportFragmentManager();
         DialogFragment editNameDialogFragment = DialogFragment.newInstance("Dodaj cenę " + gasType);
         editNameDialogFragment.show(fm, "fragment_edit_name");
-
     }
 }

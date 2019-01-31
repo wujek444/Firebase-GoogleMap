@@ -10,9 +10,6 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.MapFragment;
 
-/**
- * Created by king on 19/08/2017.
- */
 
 public class WorkaroundMapFragment extends MapFragment {
 

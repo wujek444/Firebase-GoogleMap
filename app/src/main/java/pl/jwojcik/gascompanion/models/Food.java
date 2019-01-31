@@ -5,10 +5,6 @@ import android.text.TextUtils;
 
 import java.util.HashMap;
 
-/**
- * Created by king on 17/08/2017.
- */
-
 public class Food extends Object {
 
     public String id;

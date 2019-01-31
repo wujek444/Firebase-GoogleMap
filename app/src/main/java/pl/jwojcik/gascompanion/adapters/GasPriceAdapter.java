@@ -15,9 +15,6 @@ import java.util.Random;
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.models.Food;
 
-/**
- * Created by king on 18/08/2017.
- */
 
 public class GasPriceAdapter extends RecyclerView.Adapter<GasPriceAdapter.ViewHolder> {
 

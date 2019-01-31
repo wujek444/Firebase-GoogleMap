@@ -2,9 +2,6 @@ package pl.jwojcik.gascompanion.models;
 
 import android.graphics.Bitmap;
 
-/**
- * Created by king on 18/08/2017.
- */
 
 public class CurrentUserService {
 

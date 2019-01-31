@@ -3,10 +3,6 @@ package pl.jwojcik.gascompanion.utils;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
-/**
- * Created by king on 18/08/2017.
- */
-
 public class PixelUtils {
 
     public static int dpToPx(Context context, int dp) {

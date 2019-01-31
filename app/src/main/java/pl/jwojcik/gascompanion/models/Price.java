@@ -7,14 +7,16 @@ public class Price {
     private String userEmail;
     private Double value;
     private Date insertDt;
+    private GasType gasType;
 
     public Price() {
     }
 
-    public Price(Double value) {
+    public Price(Double value, GasType gasType) {
         this.userEmail = CurrentUserService.getLoggedUser().getEmail();
         this.value = value;
         this.insertDt = new Date();
+        this.gasType = gasType;
     }
 
     public String getUserEmail() {
@@ -39,5 +41,13 @@ public class Price {
 
     public void setInsertDt(Date insertDt) {
         this.insertDt = insertDt;
+    }
+
+    public GasType getGasType() {
+        return gasType;
+    }
+
+    public void setGasType(GasType gasType) {
+        this.gasType = gasType;
     }
 }

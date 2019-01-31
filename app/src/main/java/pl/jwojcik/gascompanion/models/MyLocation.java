@@ -3,10 +3,6 @@ package pl.jwojcik.gascompanion.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by king on 18/08/2017.
- */
-
 public class MyLocation extends Object implements Parcelable {
 
     public double lat;

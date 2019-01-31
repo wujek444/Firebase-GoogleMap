@@ -5,9 +5,6 @@ import android.text.TextUtils;
 
 import java.util.HashMap;
 
-/**
- * Created by king on 17/08/2017.
- */
 
 public class User extends Object {
 

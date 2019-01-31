@@ -69,10 +69,6 @@ import pl.jwojcik.gascompanion.utils.PixelUtils;
 import static android.app.Activity.RESULT_CANCELED;
 import static com.google.android.gms.plus.PlusOneDummyView.TAG;
 
-/**
- * Created by king on 17/08/2017.
- */
-
 public class PlaceFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
 
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1001;

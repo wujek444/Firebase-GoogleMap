@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class GasStation extends Object implements Parcelable {
+public class GasStation implements Parcelable {
 
     private String id;
     private String name;
@@ -27,20 +28,10 @@ public class GasStation extends Object implements Parcelable {
     private String place_id;
     private double rating;
     private List<String> photos;
-    private List<Double> pb95Price;
-    private List<Double> pb98Price;
-    private List<Double> dieselPrice;
-    private List<Double> lpgPrice;
-
-    public GasStation(String name, String subTitle, String description, String address, MyLocation location) {
-        this.name = name;
-        this.subTitle = subTitle;
-        this.description = description;
-        this.address = address;
-        this.location = location;
-    }
+    private HashMap<String, Price> prices;
 
     public GasStation(JSONObject jsonObject) {
+        //na potrzeby wyświetlania na mapie
         try {
             name = jsonObject.getString("name");
             double lat = jsonObject.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
@@ -56,6 +47,12 @@ public class GasStation extends Object implements Parcelable {
             }
             if (subTitle.length() > 0)
                 subTitle = subTitle.substring(0, subTitle.length() - 3);
+            JSONArray pricesJSONArray = jsonObject.getJSONArray("prices");
+            List<Price> pricesList = new ArrayList<>();
+            for (int i = 0; i < pricesJSONArray.length(); i++) {
+                pricesList.add(new Price((JSONObject) pricesJSONArray.get(i)));
+            }
+//            prices = pricesList;
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -74,6 +71,7 @@ public class GasStation extends Object implements Parcelable {
         place_id = in.readString();
         rating = in.readDouble();
         photos = in.createStringArrayList();
+//        prices = in.createTypedArrayList(Price.CREATOR);
     }
 
     @Override
@@ -87,6 +85,7 @@ public class GasStation extends Object implements Parcelable {
         dest.writeString(place_id);
         dest.writeDouble(rating);
         dest.writeStringList(photos);
+        dest.writeMap(prices);
     }
 
     @Override
@@ -121,8 +120,10 @@ public class GasStation extends Object implements Parcelable {
         result.put("id", id);
         result.put("place_id", place_id);
         result.put("rating", rating);
-        if (photos != null && !photos.isEmpty())
-            result.put("photos", photos);
+//        if (photos != null && !photos.isEmpty())
+//            result.put("photos", photos);
+        if(prices != null && !prices.isEmpty())
+            result.put("prices", prices);
 
         return result;
     }

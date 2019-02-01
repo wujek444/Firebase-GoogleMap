@@ -17,18 +17,18 @@ import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
 
 
-public class ImageFragment extends Fragment {
+public class GasStationImageFragment extends Fragment {
 
     private String photoValue;
     private ImageView imageView;
     private ProgressBar progressBar;
 
-    public ImageFragment() {
+    public GasStationImageFragment() {
         super();
     }
 
-    public static ImageFragment newInstance(String photoValue) {
-        ImageFragment fragment = new ImageFragment();
+    public static GasStationImageFragment newInstance(String photoValue) {
+        GasStationImageFragment fragment = new GasStationImageFragment();
         Bundle bundle = new Bundle();
         bundle.putString("photoValue", photoValue);
         fragment.setArguments(bundle);

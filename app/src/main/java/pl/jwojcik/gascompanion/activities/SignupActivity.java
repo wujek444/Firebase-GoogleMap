@@ -12,26 +12,29 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import pl.jwojcik.gascompanion.R;
-import pl.jwojcik.gascompanion.services.FirebaseService;
 import pl.jwojcik.gascompanion.services.ObjectResultListener;
+import pl.jwojcik.gascompanion.services.firebase.UserService;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText textEmail;
     private EditText textPassword;
     private ProgressDialog progressDialog;
+    UserService userService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        textEmail = (EditText) findViewById(R.id.email);
-        textPassword = (EditText) findViewById(R.id.password);
-        Button btnSignup = (Button) findViewById(R.id.btn_signup);
-        Button btnSignin = (Button) findViewById(R.id.btn_signin);
+        textEmail = findViewById(R.id.email);
+        textPassword = findViewById(R.id.password);
+        Button btnSignup = findViewById(R.id.btn_signup);
+        Button btnSignin = findViewById(R.id.btn_signin);
         btnSignup.setOnClickListener(this);
         btnSignin.setOnClickListener(this);
+
+        userService = UserService.getInstance();
     }
 
     @Override
@@ -75,7 +78,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         showProgressDialog("");
 
-        FirebaseService.shared.signup(email, password, new ObjectResultListener() {
+        userService.signup(email, password, new ObjectResultListener() {
             @Override
             public void onResult(boolean isSuccess, String error, Object object) {
 
@@ -84,7 +87,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     Toast.makeText(SignupActivity.this, "Authentication failed." + error,
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    FirebaseService.shared.sendVerificationEmail(new ObjectResultListener() {
+                    userService.sendVerificationEmail(new ObjectResultListener() {
                         @Override
                         public void onResult(boolean isSuccess, String error, Object object) {
                             hideProgressDialog();

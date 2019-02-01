@@ -14,24 +14,27 @@ import android.widget.Toast;
 
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.enumerated.GasType;
+import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.models.Price;
-import pl.jwojcik.gascompanion.services.FirebaseService;
 import pl.jwojcik.gascompanion.services.ObjectResultListener;
+import pl.jwojcik.gascompanion.services.firebase.GasStationService;
 
-public class DialogFragment extends android.support.v4.app.DialogFragment {
+public class AddPriceDialogFragment extends android.support.v4.app.DialogFragment {
 
     private EditText pricePerLitreEditText;
     private DatePicker priceEntryDatePicker;
     private Button priceEntrySubmitBtn;
 
-    private static FirebaseService firebaseService = FirebaseService.shared;
+    private GasStationService gasStationService = GasStationService.getInstance();
+    private static GasStation currentGasStation;
 
-    public DialogFragment() {
+    public AddPriceDialogFragment() {
         //wymagany pusty konstruktor
     }
 
-    public static DialogFragment newInstance(String title) {
-        DialogFragment frag = new DialogFragment();
+    public static AddPriceDialogFragment newInstance(String title, GasStation gasStation) {
+        currentGasStation = gasStation;
+        AddPriceDialogFragment frag = new AddPriceDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
@@ -65,7 +68,8 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
             @Override
             public void onClick(View view) {
                 Price newPrice = new Price(Double.parseDouble(pricePerLitreEditText.getText().toString()), GasType.PB95);
-                firebaseService.createPrice(newPrice, new ObjectResultListener() {
+
+                gasStationService.addPrice(currentGasStation, newPrice,  new ObjectResultListener() {
                     @Override
                     public void onResult(boolean isSuccess, String error, Object object) {
                         if(isSuccess){
@@ -76,7 +80,6 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
                         }
                     }
                 });
-
             }
         });
     }

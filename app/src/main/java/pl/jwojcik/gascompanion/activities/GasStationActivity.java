@@ -19,15 +19,13 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.jwojcik.gascompanion.Constants;
 import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
-import pl.jwojcik.gascompanion.adapters.GasPriceAdapter;
-import pl.jwojcik.gascompanion.fragments.DialogFragment;
-import pl.jwojcik.gascompanion.models.Food;
+import pl.jwojcik.gascompanion.fragments.AddPriceDialogFragment;
 import pl.jwojcik.gascompanion.models.GasStation;
-import pl.jwojcik.gascompanion.services.FirebaseService;
-import pl.jwojcik.gascompanion.services.ResultListener;
+import pl.jwojcik.gascompanion.models.Price;
+import pl.jwojcik.gascompanion.services.firebase.FirebaseService;
+import pl.jwojcik.gascompanion.services.firebase.GasStationService;
 
 
 public class GasStationActivity extends AppCompatActivity implements View.OnClickListener {
@@ -53,19 +51,22 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
     private RecyclerView mRecyclerViewLPG;
     private ProgressBar progressBar;
 
-    private List<Food> mStarters;
-    private List<Food> mDrinks;
-    private List<Food> mDishes;
-    private List<Food> mDesserts;
+    private List<Price> pb95Prices;
+    private List<Price> pb98Prices;
+    private List<Price> onPrices;
+    private List<Price> lpgPrices;
 
     private ProgressDialog progressDialog;
 
     private GasStation gasStation;
+    private GasStationService gasStationService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gas_station);
+
+        gasStationService = GasStationService.getInstance();
 
         Bundle bundle = getIntent().getExtras();
         gasStation = bundle.getParcelable("value");
@@ -124,6 +125,9 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
 
         initData();
         loadData();
+        //todo: if gasStation not in database - save it
+        gasStationService.createGasStationIfNotPresent(gasStation);
+
     }
 
     @Override
@@ -178,47 +182,52 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void loadData() {
-        mStarters = new ArrayList<>();
-        mDrinks = new ArrayList<>();
-        mDishes = new ArrayList<>();
-        mDesserts = new ArrayList<>();
+        pb95Prices = new ArrayList<>();
+        pb98Prices = new ArrayList<>();
+        onPrices = new ArrayList<>();
+        lpgPrices = new ArrayList<>();
 
-        progressDialog = ProgressDialog.show(this, "Loading datas...", "");
-        FirebaseService.shared.getFoods(new ResultListener() {
-            @Override
-            public void onResult(boolean isSuccess, String error, List data) {
+        //spinner
+//        progressDialog = ProgressDialog.show(this, "Loading datas...", "");
 
-                if (isSuccess) {
-                    for (int i = 0; i < data.size(); i ++) {
-                        Food food = (Food) data.get(i);
-                        if (food.getType().equals(Constants.TYPE_STARTERS)) {
-                            mStarters.add(food);
-                        } else if (food.getType().equals(Constants.TYPE_DRINKS)) {
-                            mDrinks.add(food);
-                        } else if (food.getType().equals(Constants.TYPE_DISHES)){
-                            mDishes.add(food);
-                        } else {
-                            mDesserts.add(food);
-                        }
-                    }
 
-                    GasPriceAdapter startersAdapter = new GasPriceAdapter(GasStationActivity.this, mStarters);
-                    mRecyclerViewPB95.setAdapter(startersAdapter);
+        //TODO: zrobić napełnianie widoków cenami
 
-                    GasPriceAdapter drinksAdapter = new GasPriceAdapter(GasStationActivity.this, mDrinks);
-                    mRecyclerViewPB98.setAdapter(drinksAdapter);
-
-                    GasPriceAdapter dishesAdapter = new GasPriceAdapter(GasStationActivity.this, mDishes);
-                    mRecyclerViewON.setAdapter(dishesAdapter);
-
-                    GasPriceAdapter dessertsAdapter = new GasPriceAdapter(GasStationActivity.this, mDesserts);
-                    mRecyclerViewLPG.setAdapter(dessertsAdapter);
-
-                }
-
-                progressDialog.dismiss();
-            }
-        });
+//        FirebaseService.shared.getFoods(new ResultListener() {
+//            @Override
+//            public void onResult(boolean isSuccess, String error, List data) {
+//
+//                if (isSuccess) {
+//                    for (int i = 0; i < data.size(); i ++) {
+//                        Food food = (Food) data.get(i);
+//                        if (food.getType().equals(Constants.TYPE_STARTERS)) {
+//                            pb95Prices.add(food);
+//                        } else if (food.getType().equals(Constants.TYPE_DRINKS)) {
+//                            pb98Prices.add(food);
+//                        } else if (food.getType().equals(Constants.TYPE_DISHES)){
+//                            onPrices.add(food);
+//                        } else {
+//                            lpgPrices.add(food);
+//                        }
+//                    }
+//
+//                    GasPriceAdapter startersAdapter = new GasPriceAdapter(GasStationActivity.this, pb95Prices);
+//                    mRecyclerViewPB95.setAdapter(startersAdapter);
+//
+//                    GasPriceAdapter drinksAdapter = new GasPriceAdapter(GasStationActivity.this, pb98Prices);
+//                    mRecyclerViewPB98.setAdapter(drinksAdapter);
+//
+//                    GasPriceAdapter dishesAdapter = new GasPriceAdapter(GasStationActivity.this, onPrices);
+//                    mRecyclerViewON.setAdapter(dishesAdapter);
+//
+//                    GasPriceAdapter dessertsAdapter = new GasPriceAdapter(GasStationActivity.this, lpgPrices);
+//                    mRecyclerViewLPG.setAdapter(dessertsAdapter);
+//
+//                }
+//
+//                progressDialog.dismiss();
+//            }
+//        });
 
 
     }
@@ -234,7 +243,7 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
 
     private void showDialog(String gasType){
         FragmentManager fm = getSupportFragmentManager();
-        DialogFragment editNameDialogFragment = DialogFragment.newInstance("Dodaj cenę " + gasType);
+        AddPriceDialogFragment editNameDialogFragment = AddPriceDialogFragment.newInstance("Dodaj cenę " + gasType, gasStation);
         editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 }

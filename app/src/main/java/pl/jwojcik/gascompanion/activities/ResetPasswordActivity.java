@@ -26,7 +26,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reset);
+        setContentView(R.layout.activity_reset_password);
 
         auth = FirebaseAuth.getInstance();
         textEmail = findViewById(R.id.email);

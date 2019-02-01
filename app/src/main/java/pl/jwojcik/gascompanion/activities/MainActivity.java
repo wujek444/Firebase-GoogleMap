@@ -10,7 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.adapters.ViewPagerAdapter;
-import pl.jwojcik.gascompanion.fragments.PlaceFragment;
+import pl.jwojcik.gascompanion.fragments.MapFragment;
 import pl.jwojcik.gascompanion.fragments.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PlaceFragment());
+        adapter.addFragment(new MapFragment());
         adapter.addFragment(new ProfileFragment());
         mViewPager.setAdapter(adapter);
     }

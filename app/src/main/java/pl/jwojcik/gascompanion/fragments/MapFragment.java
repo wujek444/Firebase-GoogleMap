@@ -60,16 +60,15 @@ import pl.jwojcik.gascompanion.activities.GasStationActivity;
 import pl.jwojcik.gascompanion.adapters.GasStationAdapter;
 import pl.jwojcik.gascompanion.adapters.ViewPagerAdapter;
 import pl.jwojcik.gascompanion.models.GasStation;
-import pl.jwojcik.gascompanion.services.FirebaseService;
-import pl.jwojcik.gascompanion.services.ObjectResultListener;
 import pl.jwojcik.gascompanion.services.ResultListener;
+import pl.jwojcik.gascompanion.services.firebase.GasStationService;
 import pl.jwojcik.gascompanion.utils.PermissionUtils;
 import pl.jwojcik.gascompanion.utils.PixelUtils;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static com.google.android.gms.plus.PlusOneDummyView.TAG;
 
-public class PlaceFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
+public class MapFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
 
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1001;
     private final int PERMISSIONS_REQUEST_FINE_LOCATION = 2001;
@@ -105,17 +104,20 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
 
     private WorkaroundMapFragment mapFragment;
 
+    private GasStationService gasStationService;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         httpClient = new AsyncHttpClient();
+        gasStationService = GasStationService.getInstance();
         if (MyApplication.getGoogleApiHelper().isConnected())
             mGoogleApiClient = MyApplication.getGoogleApiHelper().getGoogleApiClient();
 
     }
 
     public View onCreateView(final LayoutInflater inflater, @NonNull ViewGroup container, @NonNull Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_place, container, false);
+        view = inflater.inflate(R.layout.fragment_map, container, false);
 
         initView();
         mTopAdapter = new ViewPagerAdapter(getFragmentManager());
@@ -130,7 +132,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
             }
         });
 
-        loadData();
+//        loadData();
         return view;
     }
 
@@ -185,7 +187,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
         progressBar.setVisibility(View.VISIBLE);
         mGasStations.clear();
         mListAdapter.setList(mGasStations);
-        FirebaseService.shared.getGasStations(new ResultListener() {
+        gasStationService.getGasStations(new ResultListener() {
             @Override
             public void onResult(boolean isSuccess, String error, List object) {
                 progressBar.setVisibility(View.GONE);
@@ -219,8 +221,8 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
                 for (String photoValue : item.getPhotos()) {
                     if (i > 4)
                         break;
-                    mTopAdapter.addFragment(ImageFragment.newInstance(photoValue));
-                    mBottomAdapter.addFragment(ImageFragment.newInstance(photoValue));
+                    mTopAdapter.addFragment(GasStationImageFragment.newInstance(photoValue));
+                    mBottomAdapter.addFragment(GasStationImageFragment.newInstance(photoValue));
                     i++;
                 }
                 mBottomAdapter.notifyDataSetChanged();
@@ -425,12 +427,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener, OnM
                         }
                         gasStation.setPhotos(photos);
 
-                        FirebaseService.shared.createGasStation(gasStation, new ObjectResultListener() {
-                            @Override
-                            public void onResult(boolean isSuccess, String error, Object object) {
-
-                            }
-                        });
+//                        FirebaseService.shared.createGasStationIfNotPresent(gasStation);
 
                     } catch (Exception e) {
                         e.printStackTrace();

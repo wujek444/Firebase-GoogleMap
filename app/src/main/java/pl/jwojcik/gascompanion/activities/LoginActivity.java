@@ -40,8 +40,8 @@ import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.models.CurrentUserService;
 import pl.jwojcik.gascompanion.models.User;
-import pl.jwojcik.gascompanion.services.FirebaseService;
 import pl.jwojcik.gascompanion.services.ObjectResultListener;
+import pl.jwojcik.gascompanion.services.firebase.UserService;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressBar progressBar;
     private ProgressDialog progressDialog;
     private FirebaseAuth auth;
+    private UserService userService;
 
     //Facebook CallbackManager
     CallbackManager callbackManager;
@@ -64,10 +65,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance();
+        userService = UserService.getInstance();
 
-        if (FirebaseService.shared.isLoggedIn()) {
+        if (userService.isLoggedIn()) {
             showProgressDialog("");
-            FirebaseService.shared.getUser(auth.getCurrentUser().getUid(), new ObjectResultListener() {
+            userService.getUser(auth.getCurrentUser().getUid(), new ObjectResultListener() {
                 @Override
                 public void onResult(boolean isSuccess, String error, Object object) {
                     hideProgressDialog();
@@ -81,13 +83,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             });
         }
 
-        textEmail = (EditText) findViewById(R.id.email);
-        textPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        Button btnLogin = (Button) findViewById(R.id.btn_login);
-        Button btnFacebook = (Button) findViewById(R.id.btn_facebook);
-        Button btnSignup = (Button) findViewById(R.id.btn_signup);
-        Button btnForgot = (Button) findViewById(R.id.btn_forgot);
+        textEmail = findViewById(R.id.email);
+        textPassword = findViewById(R.id.password);
+        progressBar = findViewById(R.id.progressBar);
+        Button btnLogin = findViewById(R.id.btn_login);
+        Button btnFacebook = findViewById(R.id.btn_facebook);
+        Button btnSignup = findViewById(R.id.btn_signup);
+        Button btnForgot = findViewById(R.id.btn_forgot);
 
         btnLogin.setOnClickListener(this);
         btnFacebook.setOnClickListener(this);
@@ -207,7 +209,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         showProgressDialog("");
-        FirebaseService.shared.login(email, password, new ObjectResultListener() {
+        userService.login(email, password, new ObjectResultListener() {
             @Override
             public void onResult(boolean isSuccess, String error, Object object) {
                 hideProgressDialog();
@@ -246,7 +248,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d(TAG, "handleFacebookAccessToken:" + token);
         showProgressDialog("");
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        FirebaseService.shared.signinWithFacebook(credential, mUser, new ObjectResultListener() {
+        userService.signinWithFacebook(credential, mUser, new ObjectResultListener() {
             @Override
             public void onResult(boolean isSuccess, String error, Object object) {
                 hideProgressDialog();

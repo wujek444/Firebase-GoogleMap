@@ -26,7 +26,11 @@ public class FirebaseService {
     private DatabaseReference foodsRef;
     private StorageReference storageRef;
 
-    public FirebaseService() {
+    public static FirebaseService getInstance(){
+        return shared;
+    }
+
+    FirebaseService() {
         firebaseAuth = FirebaseAuth.getInstance();
         usersRef = FirebaseDatabase.getInstance().getReference(KEY_USERS);
         gasStationsRef = FirebaseDatabase.getInstance().getReference(KEY_GAS_STATIONS);

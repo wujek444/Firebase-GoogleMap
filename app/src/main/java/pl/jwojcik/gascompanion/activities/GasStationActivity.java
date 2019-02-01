@@ -21,19 +21,21 @@ import java.util.List;
 
 import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
+import pl.jwojcik.gascompanion.adapters.GasPriceAdapter;
 import pl.jwojcik.gascompanion.fragments.AddPriceDialogFragment;
 import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.models.Price;
+import pl.jwojcik.gascompanion.services.ResultListener;
 import pl.jwojcik.gascompanion.services.firebase.FirebaseService;
 import pl.jwojcik.gascompanion.services.firebase.GasStationService;
 
 
 public class GasStationActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String PB95_GAS_TYPE = "PB95";
-    private final String PB98_GAS_TYPE = "PB98";
-    private final String ON_GAS_TYPE = "ON";
-    private final String LPG_GAS_TYPE = "LPG";
+    private final String PB95_GAS_TYPE = "pb95";
+    private final String PB98_GAS_TYPE = "pb98";
+    private final String ON_GAS_TYPE = "on";
+    private final String LPG_GAS_TYPE = "lpg";
 
     private ImageView btnBack;
     private ImageView ivImage;
@@ -122,9 +124,8 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         mRecyclerViewON.setLayoutManager(layoutManager3);
         LinearLayoutManager layoutManager4 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewLPG.setLayoutManager(layoutManager4);
-
-        initData();
         loadData();
+        initData();
         //todo: if gasStation not in database - save it
         gasStationService.createGasStationIfNotPresent(gasStation);
 
@@ -188,48 +189,48 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         lpgPrices = new ArrayList<>();
 
         //spinner
-//        progressDialog = ProgressDialog.show(this, "Loading datas...", "");
+        progressDialog = ProgressDialog.show(this, "Ładowanie danych", "");
 
 
-        //TODO: zrobić napełnianie widoków cenami
+        gasStationService.getGasStationPrices(gasStation, new ResultListener() {
+            List<Price> allPrices = new ArrayList<>();
 
-//        FirebaseService.shared.getFoods(new ResultListener() {
-//            @Override
-//            public void onResult(boolean isSuccess, String error, List data) {
-//
-//                if (isSuccess) {
-//                    for (int i = 0; i < data.size(); i ++) {
-//                        Food food = (Food) data.get(i);
-//                        if (food.getType().equals(Constants.TYPE_STARTERS)) {
-//                            pb95Prices.add(food);
-//                        } else if (food.getType().equals(Constants.TYPE_DRINKS)) {
-//                            pb98Prices.add(food);
-//                        } else if (food.getType().equals(Constants.TYPE_DISHES)){
-//                            onPrices.add(food);
-//                        } else {
-//                            lpgPrices.add(food);
-//                        }
-//                    }
-//
-//                    GasPriceAdapter startersAdapter = new GasPriceAdapter(GasStationActivity.this, pb95Prices);
-//                    mRecyclerViewPB95.setAdapter(startersAdapter);
-//
-//                    GasPriceAdapter drinksAdapter = new GasPriceAdapter(GasStationActivity.this, pb98Prices);
-//                    mRecyclerViewPB98.setAdapter(drinksAdapter);
-//
-//                    GasPriceAdapter dishesAdapter = new GasPriceAdapter(GasStationActivity.this, onPrices);
-//                    mRecyclerViewON.setAdapter(dishesAdapter);
-//
-//                    GasPriceAdapter dessertsAdapter = new GasPriceAdapter(GasStationActivity.this, lpgPrices);
-//                    mRecyclerViewLPG.setAdapter(dessertsAdapter);
-//
-//                }
-//
-//                progressDialog.dismiss();
-//            }
-//        });
+            @Override
+            public void onResult(boolean isSuccess, String error, List data) {
+                if (isSuccess) {
+                    allPrices = data;
+                    for (Price price : allPrices) {
+                        switch (price.getGasType()) {
+                            case PB95_GAS_TYPE:
+                                pb95Prices.add(price);
+                                break;
+                            case PB98_GAS_TYPE:
+                                pb98Prices.add(price);
+                                break;
+                            case LPG_GAS_TYPE:
+                                lpgPrices.add(price);
+                                break;
+                            case ON_GAS_TYPE:
+                                onPrices.add(price);
+                                break;
+                        }
+                    }
 
+                    GasPriceAdapter pb95Adapter = new GasPriceAdapter(GasStationActivity.this, pb95Prices);
+                    mRecyclerViewPB95.setAdapter(pb95Adapter);
 
+                    GasPriceAdapter pb98Adapter = new GasPriceAdapter(GasStationActivity.this, pb98Prices);
+                    mRecyclerViewPB98.setAdapter(pb98Adapter);
+
+                    GasPriceAdapter onAdapter = new GasPriceAdapter(GasStationActivity.this, onPrices);
+                    mRecyclerViewON.setAdapter(onAdapter);
+
+                    GasPriceAdapter lpgAdapter = new GasPriceAdapter(GasStationActivity.this, lpgPrices);
+                    mRecyclerViewLPG.setAdapter(lpgAdapter);
+                }
+                progressDialog.dismiss();
+            }
+        });
     }
 
     @Override
@@ -241,7 +242,7 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void showDialog(String gasType){
+    private void showDialog(String gasType) {
         FragmentManager fm = getSupportFragmentManager();
         AddPriceDialogFragment editNameDialogFragment = AddPriceDialogFragment.newInstance("Dodaj cenę " + gasType, gasStation);
         editNameDialogFragment.show(fm, "fragment_edit_name");

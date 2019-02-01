@@ -66,8 +66,8 @@ public class GasStationAdapter extends ArrayAdapter<GasStation> {
         public TextView tvAddress;
 
         public ViewHolder(View view) {
-            tvName = (TextView) view.findViewById(R.id.tv_name);
-            tvAddress = (TextView) view.findViewById(R.id.tv_address);
+            tvName = view.findViewById(R.id.tv_name);
+            tvAddress = view.findViewById(R.id.tv_address);
         }
     }
 

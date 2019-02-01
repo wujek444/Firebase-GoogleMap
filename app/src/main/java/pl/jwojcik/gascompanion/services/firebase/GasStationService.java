@@ -85,6 +85,28 @@ public class GasStationService extends FirebaseService{
         });
     }
 
+    public void getGasStationPrices(final GasStation gasStation, final ResultListener listener){
+        String path = "/" + gasStation.getPlace_id() + "/" + FirebaseService.KEY_PRICES;
+        DatabaseReference pricesRef = FirebaseService.getInstance().getGasStationsRef().child(path);
+
+        pricesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Price> priceList = new ArrayList<>();
+                for(DataSnapshot priceSnapshot : dataSnapshot.getChildren()){
+                    Price price = priceSnapshot.getValue(Price.class);
+                    priceList.add(price);
+                }
+                listener.onResult(true, null, priceList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onResult(false, databaseError.getMessage(), null);
+            }
+        });
+    }
+
     public void addPrice(GasStation gasStation, Price price, ObjectResultListener listener){
         gasStationsRef.child(gasStation.getPlace_id()).child(KEY_PRICES).child(generateRandomId()).setValue(price);
         listener.onResult(true, null, null);

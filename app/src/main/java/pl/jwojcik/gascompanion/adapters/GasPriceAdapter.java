@@ -1,6 +1,8 @@
 package pl.jwojcik.gascompanion.adapters;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,33 +11,23 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Random;
 
 import pl.jwojcik.gascompanion.R;
-import pl.jwojcik.gascompanion.models.Food;
+import pl.jwojcik.gascompanion.models.Price;
 
 
 public class GasPriceAdapter extends RecyclerView.Adapter<GasPriceAdapter.ViewHolder> {
 
-    private List<Food> dataList;
+    private List<Price> dataList;
     private Context mContext;
+    private DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 
-    private int[] resourceList = new int[] {
-            R.drawable.bg_dishes_1,
-            R.drawable.bg_dishes_2,
-            R.drawable.bg_dishes_3,
-            R.drawable.bg_dishes_4,
-            R.drawable.bg_starters_1,
-            R.drawable.bg_starters_2,
-            R.drawable.bg_starters_3,
-            R.drawable.bg_drinks_1,
-            R.drawable.bg_drinks_2,
-            R.drawable.bg_drinks_3,
-            R.drawable.bg_drinks_4
-    };
 
-    public GasPriceAdapter(Context context, List<Food> list) {
+
+    public GasPriceAdapter(@NonNull Context context, List<Price> list) {
         super();
         this.mContext = context;
         this.dataList = list;
@@ -49,33 +41,10 @@ public class GasPriceAdapter extends RecyclerView.Adapter<GasPriceAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
-        final Food item = dataList.get(position);
-        holder.tvName.setText(item.getName());
-        holder.tvPrice.setText(String.format("%.0f%s", item.getPrice(), item.getCurrencyType()));
-
-        Random random = new Random();
-        int resourceId = random.nextInt(11);
-        holder.imageView.setImageResource(resourceList[resourceId]);
-//        if (item.image == null) {
-//            holder.progressBar.setVisibility(View.VISIBLE);
-//            String imagePath = "foods/" + item.id + "/photo";
-//            FirebaseService.shared.downloadPhoto(imagePath, new ImageResultListener() {
-//                @Override
-//                public void onResult(boolean isSuccess, String error, Bitmap bitmap) {
-//                    holder.progressBar.setVisibility(View.GONE);
-//                    if (bitmap != null) {
-//                        item.image = bitmap;
-//                        holder.imageView.setImageBitmap(item.image);
-//                    } else {
-//                        holder.imageView.setImageResource(R.drawable.bg_dishes_1);
-//                    }
-//                }
-//            });
-//        } else {
-//            holder.imageView.setImageBitmap(item.image);
-//        }
-
+        final Price item = dataList.get(position);
+        holder.tvName.setText("dodał " + item.getUserEmail());
+        holder.tvPrice.setText(String.format("%.0f%s", item.getValue(), " PLN/litr"));
+        holder.tvDate.setText("Dnia " + df.format(item.getInsertDt()));
     }
 
     @Override
@@ -88,14 +57,14 @@ public class GasPriceAdapter extends RecyclerView.Adapter<GasPriceAdapter.ViewHo
         public ImageView imageView;
         public TextView tvName;
         public TextView tvPrice;
+        public TextView tvDate;
         public ProgressBar progressBar;
 
         public ViewHolder(View view) {
             super(view);
-            imageView = view.findViewById(R.id.iv_food);
             tvName = view.findViewById(R.id.tv_name);
             tvPrice = view.findViewById(R.id.tv_price);
-            progressBar = view.findViewById(R.id.progressBar);
+            tvDate = view.findViewById(R.id.tv_date);
         }
     }
 

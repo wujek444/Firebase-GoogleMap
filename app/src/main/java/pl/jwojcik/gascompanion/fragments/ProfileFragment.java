@@ -66,9 +66,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         try {
             if (!TextUtils.isEmpty(user.getName())) {
                 tvName.setText(user.getName());
-            }
-            if (user.getLoginType() == Constants.TYPE_FACEBOOK) {
-                btnResetPassword.setVisibility(View.GONE);
             } else {
                 btnResetPassword.setVisibility(View.VISIBLE);
             }

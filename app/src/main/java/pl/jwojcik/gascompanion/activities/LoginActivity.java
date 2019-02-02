@@ -23,7 +23,6 @@ import pl.jwojcik.gascompanion.services.firebase.UserService;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "FacebookLogin";
     private EditText textEmail;
     private EditText textPassword;
     private ProgressBar progressBar;
@@ -31,7 +30,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth auth;
     private UserService userService;
 
-    private User mUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -62,9 +62,9 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ResetPasswordActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ResetPasswordActivity.this, "Przesłaliśmy ci wiadomość z dalszymi instrukcjami. Sprawdź skrzynkę.", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(ResetPasswordActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ResetPasswordActivity.this, "Nie udało się wysłać maila do zresetowania hasła!", Toast.LENGTH_SHORT).show();
                         }
 
                         progressBar.setVisibility(View.GONE);

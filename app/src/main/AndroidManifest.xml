@@ -65,9 +65,9 @@
         <activity android:name="pl.jwojcik.gascompanion.activities.GasStationActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".activities.PlacesActivity"
-            android:windowSoftInputMode="stateAlwaysVisible"
-            android:screenOrientation="portrait"/>
+        <!--<activity android:name=".activities.PlacesActivity"-->
+            <!--android:windowSoftInputMode="stateAlwaysVisible"-->
+            <!--android:screenOrientation="portrait"/>-->
 
     </application>
 

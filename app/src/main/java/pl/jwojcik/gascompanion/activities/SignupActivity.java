@@ -84,7 +84,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
                 if (!isSuccess) {
                     hideProgressDialog();
-                    Toast.makeText(SignupActivity.this, "Authentication failed." + error,
+                    Toast.makeText(SignupActivity.this, "Autoryzacja nie powiodła się." + error,
                             Toast.LENGTH_SHORT).show();
                 } else {
                     userService.sendVerificationEmail(new ObjectResultListener() {
@@ -92,7 +92,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         public void onResult(boolean isSuccess, String error, Object object) {
                             hideProgressDialog();
                             if (isSuccess)
-                                Toast.makeText(SignupActivity.this, "Email Verification Sent. Please check your email and follow the provided link for verification", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignupActivity.this, "Wiadomość do zweryfikowania adresu email został wysłany. Sprawdź skrzynkę", Toast.LENGTH_SHORT).show();
                             else
                                 Toast.makeText(SignupActivity.this, error, Toast.LENGTH_LONG).show();
                             finish();

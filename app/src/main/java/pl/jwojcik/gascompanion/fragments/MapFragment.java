@@ -126,11 +126,11 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GasStation item = mListAdapter.getItem(position);
+                //pobieranie zdjęć dla miejsc
                 showUIs(item);
             }
         });
 
-//        loadData();
         return view;
     }
 
@@ -179,30 +179,6 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
                 }
                 break;
         }
-    }
-
-    private void loadData() {
-        progressBar.setVisibility(View.VISIBLE);
-        mGasStations.clear();
-        mListAdapter.setList(mGasStations);
-        gasStationService.getGasStations(new ResultListener() {
-            @Override
-            public void onResult(boolean isSuccess, String error, List object) {
-                progressBar.setVisibility(View.GONE);
-                if (object != null) {
-                    for (int i = 0; i < object.size(); i++) {
-                        GasStation item = (GasStation) object.get(i);
-                        mGasStations.add(item);
-                        if (i == 0) {
-                            updateUIs(item);
-                        }
-                    }
-                    mListAdapter.setList(mGasStations);
-                    showNearbyPlaces(mGasStations);
-
-                }
-            }
-        });
     }
 
     private void updateUIs(GasStation item) {
@@ -318,9 +294,7 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
                             .build(getActivity());
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
         } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
         }
     }
 
@@ -334,15 +308,15 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
                 btnSearch.setText(place.getName());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getActivity(), data);
-                // TODO: Handle the error.
                 Log.i(TAG, status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
+                // użytkownik anulował akcję
             }
         }
     }
 
+    //wyszukiwanie stacji benzynowych
     private void findNearbyGasStations(String latlng) {
         progressBar.setVisibility(View.VISIBLE);
         mMap.clear();
@@ -422,9 +396,6 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
                             photos.add(path);
                         }
                         gasStation.setPhotos(photos);
-
-//                        FirebaseService.shared.createGasStationIfNotPresent(gasStation);
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

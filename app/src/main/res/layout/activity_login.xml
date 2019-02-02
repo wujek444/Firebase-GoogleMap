@@ -72,16 +72,6 @@
             android:text="@string/btn_login"
             android:textColor="@color/white" />
 
-        <Button
-            android:id="@+id/btn_facebook"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:background="@color/bg_facebook"
-            android:text="@string/btn_facebook"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
-
         <!-- Link to Login Screen -->
         <Button
             android:id="@+id/btn_forgot"

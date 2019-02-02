@@ -1,6 +1,5 @@
 package pl.jwojcik.gascompanion.models;
 
-import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import java.util.HashMap;
@@ -17,7 +16,6 @@ public class User extends Object {
     private String email;
     private String gender;
     private String birthday;
-    private Bitmap image;
     private String loginType;
 
     public User(String email, String loginType) {

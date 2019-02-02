@@ -30,12 +30,7 @@ import pl.jwojcik.gascompanion.models.User;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private View view;
-    private CircleImageView ivAvatar;
     private TextView tvName;
-    private ImageView btnProfile;
-    private ImageView btnHistory;
-    private ImageView btnPayment;
-    private ImageView btnHelp;
     private Button btnResetPassword;
     private Button btnLogout;
     private FirebaseAuth auth;
@@ -51,8 +46,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
                     startActivity(new Intent(getContext(), LoginActivity.class));
                     getActivity().finish();
                 }
@@ -66,20 +59,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void initView() {
 
-        ivAvatar = (CircleImageView) view.findViewById(R.id.iv_avatar);
-        tvName = (TextView) view.findViewById(R.id.tv_name);
-        btnProfile = (ImageView) view.findViewById(R.id.iv_profile);
-        btnHistory = (ImageView) view.findViewById(R.id.iv_history);
-        btnPayment = (ImageView) view.findViewById(R.id.iv_payment);
-        btnHelp = (ImageView) view.findViewById(R.id.iv_help);
-        btnResetPassword = (Button) view.findViewById(R.id.btn_reset_password);
-        btnLogout = (Button) view.findViewById(R.id.btn_logout);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        tvName = view.findViewById(R.id.tv_name);
+        btnResetPassword = view.findViewById(R.id.btn_reset_password);
+        btnLogout = view.findViewById(R.id.btn_logout);
+        progressBar = view.findViewById(R.id.progressBar);
 
-        btnProfile.setOnClickListener(this);
-        btnHistory.setOnClickListener(this);
-        btnPayment.setOnClickListener(this);
-        btnHelp.setOnClickListener(this);
         btnResetPassword.setOnClickListener(this);
         btnLogout.setOnClickListener(this);
 
@@ -88,10 +72,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             if (!TextUtils.isEmpty(user.getName())) {
                 tvName.setText(user.getName());
             }
-            if (user.getImage() != null) {
-                ivAvatar.setImageBitmap(user.getImage());
-            }
-
             if (user.getLoginType() == Constants.TYPE_FACEBOOK) {
                 btnResetPassword.setVisibility(View.GONE);
             } else {
@@ -128,18 +108,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_profile:
-
-                break;
-            case R.id.iv_history:
-
-                break;
-            case R.id.iv_payment:
-
-                break;
-            case R.id.iv_help:
-
-                break;
             case R.id.btn_reset_password:
                 resetPassword();
                 break;

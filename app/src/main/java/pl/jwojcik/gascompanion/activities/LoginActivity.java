@@ -33,8 +33,6 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-
 import pl.jwojcik.gascompanion.Constants;
 import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
@@ -87,12 +85,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textPassword = findViewById(R.id.password);
         progressBar = findViewById(R.id.progressBar);
         Button btnLogin = findViewById(R.id.btn_login);
-        Button btnFacebook = findViewById(R.id.btn_facebook);
         Button btnSignup = findViewById(R.id.btn_signup);
         Button btnForgot = findViewById(R.id.btn_forgot);
 
         btnLogin.setOnClickListener(this);
-        btnFacebook.setOnClickListener(this);
         btnSignup.setOnClickListener(this);
         btnForgot.setOnClickListener(this);
 
@@ -129,7 +125,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                         @Override
                                         public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                                            mUser.setImage(bitmap);
                                             handleFacebookAccessToken(loginResult.getAccessToken());
                                         }
 
@@ -178,9 +173,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 hideSoftKeyboard();
                 login();
                 break;
-            case R.id.btn_facebook:
-                loginWithFacebook();
-                break;
             case R.id.btn_forgot:
                 startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
                 break;
@@ -221,15 +213,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
-    }
-
-    private void loginWithFacebook() {
-        LoginManager
-                .getInstance()
-                .logInWithReadPermissions(
-                        this,
-                        Arrays.asList("public_profile", "user_friends", "email", "user_birthday")
-                );
     }
 
     private void startMainActivity() {

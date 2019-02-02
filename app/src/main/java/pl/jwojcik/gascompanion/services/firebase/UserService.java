@@ -1,6 +1,5 @@
 package pl.jwojcik.gascompanion.services.firebase;
 
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,7 +16,6 @@ import com.google.firebase.storage.StorageReference;
 import pl.jwojcik.gascompanion.Constants;
 import pl.jwojcik.gascompanion.models.CurrentUserService;
 import pl.jwojcik.gascompanion.models.User;
-import pl.jwojcik.gascompanion.services.ImageResultListener;
 import pl.jwojcik.gascompanion.services.ObjectResultListener;
 
 public class UserService extends FirebaseService {
@@ -27,13 +25,11 @@ public class UserService extends FirebaseService {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usersRef;
     private StorageReference storageRef;
-    private PhotoService photoService;
 
     private UserService() {
         this.firebaseAuth = getFirebaseAuth();
         this.usersRef = getUsersRef();
         this.storageRef = getStorageRef();
-        this.photoService = PhotoService.getInstance();
     }
 
     public static UserService getInstance() {
@@ -127,19 +123,12 @@ public class UserService extends FirebaseService {
             newId = user.getUid();
         }
         usersRef.child(newId).child(KEY_DETAILS).setValue(user.firebaseDetails());
-        if (user.getImage() != null) {
-            uploadUserPhoto(user.getImage(), newId);
-        }
     }
 
     public boolean isLoggedIn() {
         return firebaseAuth.getCurrentUser() != null;
     }
 
-    public void uploadUserPhoto(Bitmap bitmap, String uid) {
-        StorageReference imageRef = storageRef.child(KEY_USERS).child(uid).child(KEY_PHOTO);
-        photoService.uploadPhoto(bitmap, imageRef);
-    }
 
     public void getUser(final String uid, final ObjectResultListener listener) {
 
@@ -147,18 +136,7 @@ public class UserService extends FirebaseService {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final User user = dataSnapshot.child(KEY_DETAILS).getValue(User.class);
-                String path = KEY_USERS + "/" + uid + "/" + KEY_PHOTO;
-
-                photoService.downloadPhoto(path, new ImageResultListener() {
-                    @Override
-                    public void onResult(boolean isSuccess, String error, Bitmap bitmap) {
-                        if (isSuccess) {
-                            if (bitmap != null)
-                                user.setImage(bitmap);
-                        }
-                        listener.onResult(true, null, user);
-                    }
-                });
+                listener.onResult(true, null, user);
             }
 
             @Override

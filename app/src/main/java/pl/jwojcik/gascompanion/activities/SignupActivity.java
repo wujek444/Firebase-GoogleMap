@@ -60,7 +60,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void signup() {
         final String email = textEmail.getText().toString().trim();
         String password = textEmail.getText().toString();
-
+        //walidacja
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), getString(R.string.empty_email), Toast.LENGTH_SHORT).show();
             return;

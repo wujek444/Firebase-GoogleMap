@@ -13,6 +13,7 @@ import com.google.android.gms.maps.MapFragment;
 
 public class WorkaroundMapFragment extends MapFragment {
 
+    //rozwiązanie problemów z przesuwaniem mapy i z tłem
     private OnTouchListener mListener;
 
     @Override

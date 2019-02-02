@@ -52,8 +52,6 @@ public class GasStation implements Parcelable {
             for (int i = 0; i < pricesJSONArray.length(); i++) {
                 pricesList.add(new Price((JSONObject) pricesJSONArray.get(i)));
             }
-//            prices = pricesList;
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -71,7 +69,6 @@ public class GasStation implements Parcelable {
         place_id = in.readString();
         rating = in.readDouble();
         photos = in.createStringArrayList();
-//        prices = in.createTypedArrayList(Price.CREATOR);
     }
 
     @Override
@@ -120,8 +117,6 @@ public class GasStation implements Parcelable {
         result.put("id", id);
         result.put("place_id", place_id);
         result.put("rating", rating);
-//        if (photos != null && !photos.isEmpty())
-//            result.put("photos", photos);
         if(prices != null && !prices.isEmpty())
             result.put("prices", prices);
 

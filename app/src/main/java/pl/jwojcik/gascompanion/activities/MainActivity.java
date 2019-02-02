@@ -1,12 +1,9 @@
 package pl.jwojcik.gascompanion.activities;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.adapters.ViewPagerAdapter;
@@ -43,11 +40,4 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.getTabAt(0).setCustomView(R.layout.tab_place);
         mTabLayout.getTabAt(1).setCustomView(R.layout.tab_profile);
     }
-
-
-    DatabaseReference mGasStationsRef;
-    private void test() {
-        mGasStationsRef = FirebaseDatabase.getInstance().getReference("gasStations");
-    }
-
 }

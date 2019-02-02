@@ -3,69 +3,79 @@ package pl.jwojcik.gascompanion.adapters;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.models.Price;
 
 
-public class GasPriceAdapter extends RecyclerView.Adapter<GasPriceAdapter.ViewHolder> {
+public class GasPriceAdapter extends ArrayAdapter<Price> {
 
-    private List<Price> dataList;
+    private List<Price> dataList = new ArrayList<>();
     private Context mContext;
     private DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 
 
 
-    public GasPriceAdapter(@NonNull Context context, List<Price> list) {
-        super();
-        this.mContext = context;
-        this.dataList = list;
+    private LayoutInflater inflater;
+
+    public GasPriceAdapter(@NonNull Context context, @LayoutRes int resource, List<Price> prices) {
+        super(context, resource);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void setList(List<Price> list) {
+        dataList.addAll(list);
+        notifyDataSetChanged();
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gas_price, parent, false);
-        return new ViewHolder(itemView);
-    }
-
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Price item = dataList.get(position);
-        holder.tvName.setText("dodał " + item.getUserEmail());
-        holder.tvPrice.setText(String.format("%.0f%s", item.getValue(), " PLN/litr"));
-        holder.tvDate.setText("Dnia " + df.format(item.getInsertDt()));
-    }
-
-    @Override
-    public int getItemCount() {
+    public int getCount() {
         return dataList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public Price getItem(int position) {
+        return dataList.get(position);
+    }
 
-        public ImageView imageView;
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        GasPriceAdapter.ViewHolder holder;
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.item_gas_price, null);
+            holder = new GasPriceAdapter.ViewHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (GasPriceAdapter.ViewHolder) convertView.getTag();
+        }
+        Price item = getItem(position);
+        holder.tvName.setText("dodał " + item.getUserEmail());
+        holder.tvPrice.setText(String.format("%.0f%s", item.getValue(), " PLN/litr"));
+        holder.tvDate.setText("Dnia " + df.format(item.getInsertDt()));
+
+        return convertView;
+    }
+
+    private class ViewHolder {
         public TextView tvName;
         public TextView tvPrice;
         public TextView tvDate;
-        public ProgressBar progressBar;
 
         public ViewHolder(View view) {
-            super(view);
             tvName = view.findViewById(R.id.tv_name);
             tvPrice = view.findViewById(R.id.tv_price);
             tvDate = view.findViewById(R.id.tv_date);
         }
     }
-
 }

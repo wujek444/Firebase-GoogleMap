@@ -62,8 +62,6 @@ public class AddPriceDialogFragment extends android.support.v4.app.DialogFragmen
         pricePerLitreEditText.requestFocus();
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-
-        //fixme: cena zapisywana jako dziecko gasStation
         priceEntrySubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

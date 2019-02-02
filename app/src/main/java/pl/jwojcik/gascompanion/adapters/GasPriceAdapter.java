@@ -21,14 +21,11 @@ import pl.jwojcik.gascompanion.models.Price;
 public class GasPriceAdapter extends ArrayAdapter<Price> {
 
     private List<Price> dataList = new ArrayList<>();
-    private Context mContext;
-    private DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-
-
+    private DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
     private LayoutInflater inflater;
 
-    public GasPriceAdapter(@NonNull Context context, @LayoutRes int resource, List<Price> prices) {
+    public GasPriceAdapter(@NonNull Context context, @LayoutRes int resource) {
         super(context, resource);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -61,7 +58,7 @@ public class GasPriceAdapter extends ArrayAdapter<Price> {
         }
         Price item = getItem(position);
         holder.tvName.setText("dodał " + item.getUserEmail());
-        holder.tvPrice.setText(String.format("%.0f%s", item.getValue(), " PLN/litr"));
+        holder.tvPrice.setText(String.format("%.2f%s", item.getValue(), " PLN/litr"));
         holder.tvDate.setText("Dnia " + df.format(item.getInsertDt()));
 
         return convertView;

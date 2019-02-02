@@ -1,6 +1,7 @@
 package pl.jwojcik.gascompanion.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import pl.jwojcik.gascompanion.R;
+import pl.jwojcik.gascompanion.activities.GasStationActivity;
 import pl.jwojcik.gascompanion.enumerated.GasType;
 import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.models.Price;
@@ -72,7 +74,9 @@ public class AddPriceDialogFragment extends android.support.v4.app.DialogFragmen
                     public void onResult(boolean isSuccess, String error, Object object) {
                         if(isSuccess){
                             Toast.makeText(getActivity(), "Dodano cenę", Toast.LENGTH_LONG).show();
-                            getActivity().finish();
+                            Intent intent = new Intent(getContext(), GasStationActivity.class);
+                            intent.putExtra("value", currentGasStation);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
                         }

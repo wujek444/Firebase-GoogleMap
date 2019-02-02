@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +16,8 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import pl.jwojcik.gascompanion.MyApplication;
@@ -28,6 +28,7 @@ import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.models.Price;
 import pl.jwojcik.gascompanion.services.ResultListener;
 import pl.jwojcik.gascompanion.services.firebase.GasStationService;
+import pl.jwojcik.gascompanion.utils.PriceComparator;
 
 
 public class GasStationActivity extends AppCompatActivity implements View.OnClickListener {
@@ -109,24 +110,15 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
         });
 
         listViewPB95 = findViewById(R.id.listview_pb95);
-//        listViewPB98 = findViewById(R.id.listview_pb98);
-//        listViewON = findViewById(R.id.listview_on);
-//        listViewLPG = findViewById(R.id.listview_lpg);
+        listViewPB98 = findViewById(R.id.listview_pb98);
+        listViewON = findViewById(R.id.listview_on);
+        listViewLPG = findViewById(R.id.listview_lpg);
         progressBar = findViewById(R.id.progressBar);
 
         btnBack.setOnClickListener(this);
 
-//        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        listViewPB95.setLayoutManager(layoutManager1);
-//        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        listViewPB98.setLayoutManager(layoutManager2);
-//        LinearLayoutManager layoutManager3 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        listViewON.setLayoutManager(layoutManager3);
-//        LinearLayoutManager layoutManager4 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        listViewLPG.setLayoutManager(layoutManager4);
         loadData();
         initData();
-        //todo: if gasStation not in database - save it
         gasStationService.createGasStationIfNotPresent(gasStation);
 
     }
@@ -216,25 +208,25 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
                         }
                     }
 
-                    GasPriceAdapter pb95Adapter = new GasPriceAdapter(GasStationActivity.this, 0, pb95Prices);
-//                    pb95Adapter.setList(pb95Prices);
+                    GasPriceAdapter pb95Adapter = new GasPriceAdapter(GasStationActivity.this, 0);
+                    Collections.sort(pb95Prices, new PriceComparator());
                     pb95Adapter.setList(pb95Prices);
                     listViewPB95.setAdapter(pb95Adapter);
 
-//                    GasPriceAdapter pb98Adapter = new GasPriceAdapter(GasStationActivity.this, 0, pb98Prices);
-////                    pb98Adapter.setList(pb98Prices);
-//                    pb98Adapter.setList(pb98Prices);
-//                    listViewPB98.setAdapter(pb98Adapter);
-//
-//                    GasPriceAdapter onAdapter = new GasPriceAdapter(GasStationActivity.this, 0, onPrices);
-////                    onAdapter.setList(onPrices);
-//                    onAdapter.setList(onPrices);
-//                    listViewON.setAdapter(onAdapter);
-//
-//                    GasPriceAdapter lpgAdapter = new GasPriceAdapter(GasStationActivity.this, 0, lpgPrices);
-////                    lpgAdapter.setList(lpgPrices);
-//                    lpgAdapter.setList(lpgPrices);
-//                    listViewLPG.setAdapter(lpgAdapter);
+                    GasPriceAdapter pb98Adapter = new GasPriceAdapter(GasStationActivity.this, 0);
+                    Collections.sort(pb98Prices, new PriceComparator());
+                    pb98Adapter.setList(pb98Prices);
+                    listViewPB98.setAdapter(pb98Adapter);
+
+                    GasPriceAdapter onAdapter = new GasPriceAdapter(GasStationActivity.this, 0);
+                    Collections.sort(onPrices, new PriceComparator());
+                    onAdapter.setList(onPrices);
+                    listViewON.setAdapter(onAdapter);
+
+                    GasPriceAdapter lpgAdapter = new GasPriceAdapter(GasStationActivity.this, 0);
+                    Collections.sort(lpgPrices, new PriceComparator());
+                    lpgAdapter.setList(lpgPrices);
+                    listViewLPG.setAdapter(lpgAdapter);
                 }
                 progressDialog.dismiss();
             }

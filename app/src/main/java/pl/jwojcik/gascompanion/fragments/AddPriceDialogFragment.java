@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.activities.GasStationActivity;
-import pl.jwojcik.gascompanion.enumerated.GasType;
 import pl.jwojcik.gascompanion.models.GasStation;
 import pl.jwojcik.gascompanion.models.Price;
 import pl.jwojcik.gascompanion.services.ObjectResultListener;
@@ -29,16 +28,18 @@ public class AddPriceDialogFragment extends android.support.v4.app.DialogFragmen
 
     private GasStationService gasStationService = GasStationService.getInstance();
     private static GasStation currentGasStation;
+    private static String gasType;
 
     public AddPriceDialogFragment() {
         //wymagany pusty konstruktor
     }
 
-    public static AddPriceDialogFragment newInstance(String title, GasStation gasStation) {
+    public static AddPriceDialogFragment newInstance(String gasTypeString, GasStation gasStation) {
         currentGasStation = gasStation;
         AddPriceDialogFragment frag = new AddPriceDialogFragment();
         Bundle args = new Bundle();
-        args.putString("title", title);
+        gasType = gasTypeString;
+        args.putString("title", "Dodaj cenę " + gasType);
         frag.setArguments(args);
         return frag;
     }
@@ -67,7 +68,7 @@ public class AddPriceDialogFragment extends android.support.v4.app.DialogFragmen
         priceEntrySubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Price newPrice = new Price(Double.parseDouble(pricePerLitreEditText.getText().toString()), GasType.PB95);
+                Price newPrice = new Price(Double.parseDouble(pricePerLitreEditText.getText().toString()), gasType);
 
                 gasStationService.addPrice(currentGasStation, newPrice,  new ObjectResultListener() {
                     @Override
@@ -76,6 +77,8 @@ public class AddPriceDialogFragment extends android.support.v4.app.DialogFragmen
                             Toast.makeText(getActivity(), "Dodano cenę", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getContext(), GasStationActivity.class);
                             intent.putExtra("value", currentGasStation);
+                            getDialog().dismiss();
+                            getActivity().finish();
                             startActivity(intent);
                         } else {
                             Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();

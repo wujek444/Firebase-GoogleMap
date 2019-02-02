@@ -30,6 +30,13 @@ public class Price implements Parcelable {
         this.gasType = gasType.getName();
     }
 
+    public Price(Double value, String gasType) {
+        this.userEmail = CurrentUserService.getLoggedUser().getEmail();
+        this.value = value;
+        this.insertDt = new Date();
+        this.gasType = gasType;
+    }
+
     public Price(JSONObject jsonObject){
         try {
             this.userEmail = jsonObject.getString("userEmail");

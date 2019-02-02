@@ -244,7 +244,7 @@ public class GasStationActivity extends AppCompatActivity implements View.OnClic
 
     private void showDialog(String gasType) {
         FragmentManager fm = getSupportFragmentManager();
-        AddPriceDialogFragment editNameDialogFragment = AddPriceDialogFragment.newInstance("Dodaj cenę " + gasType, gasStation);
+        AddPriceDialogFragment editNameDialogFragment = AddPriceDialogFragment.newInstance(gasType, gasStation);
         editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 }

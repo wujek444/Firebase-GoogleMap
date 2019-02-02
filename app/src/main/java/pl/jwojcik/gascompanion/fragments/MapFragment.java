@@ -98,7 +98,6 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
     private Drawable mDotDisabled;
     private AsyncHttpClient httpClient;
 
-    private ViewPagerAdapter mTopAdapter;
     private ViewPagerAdapter mBottomAdapter;
     private GasStationAdapter mListAdapter;
 
@@ -120,7 +119,6 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
         view = inflater.inflate(R.layout.fragment_map, container, false);
 
         initView();
-        mTopAdapter = new ViewPagerAdapter(getFragmentManager());
         mBottomAdapter = new ViewPagerAdapter(getFragmentManager());
         mListAdapter = new GasStationAdapter(getContext(), 0);
         listView.setAdapter(mListAdapter);
@@ -208,10 +206,9 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
     }
 
     private void updateUIs(GasStation item) {
-
+        //załadowanie zdjęcia
         selectedGasStation = item;
         mBottomViewPager.removeAllViews();
-        mTopAdapter.removeAll();
         mBottomAdapter.removeAll();
 
         if (item != null) {
@@ -221,7 +218,6 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
                 for (String photoValue : item.getPhotos()) {
                     if (i > 4)
                         break;
-                    mTopAdapter.addFragment(GasStationImageFragment.newInstance(photoValue));
                     mBottomAdapter.addFragment(GasStationImageFragment.newInstance(photoValue));
                     i++;
                 }

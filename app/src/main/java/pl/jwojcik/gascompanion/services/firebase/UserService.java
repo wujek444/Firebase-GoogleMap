@@ -90,24 +90,6 @@ public class UserService extends FirebaseService {
                 });
     }
 
-    public void signinWithFacebook(AuthCredential credential, final User user, final ObjectResultListener listener) {
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            listener.onResult(false, task.getException().getLocalizedMessage(), null);
-                        } else {
-                            if (user != null) {
-                                createUser(user, true);
-                                CurrentUserService.login(user);
-                            }
-                            listener.onResult(true, null, null);
-                        }
-                    }
-                });
-    }
-
     public void createUser(User user, boolean isNewId) {
 
         String newId;

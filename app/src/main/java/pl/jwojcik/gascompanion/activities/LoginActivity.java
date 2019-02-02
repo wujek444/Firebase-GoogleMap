@@ -3,11 +3,9 @@ package pl.jwojcik.gascompanion.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -15,26 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import pl.jwojcik.gascompanion.Constants;
-import pl.jwojcik.gascompanion.MyApplication;
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.models.CurrentUserService;
 import pl.jwojcik.gascompanion.models.User;
@@ -50,9 +30,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressDialog progressDialog;
     private FirebaseAuth auth;
     private UserService userService;
-
-    //Facebook CallbackManager
-    CallbackManager callbackManager;
 
     private User mUser;
 
@@ -91,72 +68,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
         btnSignup.setOnClickListener(this);
         btnForgot.setOnClickListener(this);
-
-        // Facebook
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(final LoginResult loginResult) {
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                Log.v(TAG, response.toString());
-
-                                try {
-                                    String id = object.getString("id");
-                                    String email = object.getString("email");
-                                    String name = object.getString("name");
-                                    String gender = object.getString("gender");
-                                    String birthday = object.getString("birthday");
-                                    mUser = new User(name, email, gender, birthday, Constants.TYPE_FACEBOOK);
-                                    MyApplication.mImageLoader.loadImage(String.format("http://graph.facebook.com/%s/picture?type=square", id), new ImageLoadingListener() {
-                                        @Override
-                                        public void onLoadingStarted(String s, View view) {
-
-                                        }
-
-                                        @Override
-                                        public void onLoadingFailed(String s, View view, FailReason failReason) {
-                                            handleFacebookAccessToken(loginResult.getAccessToken());
-                                        }
-
-                                        @Override
-                                        public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                                            handleFacebookAccessToken(loginResult.getAccessToken());
-                                        }
-
-                                        @Override
-                                        public void onLoadingCancelled(String s, View view) {
-
-                                        }
-                                    });
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                                }
-
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender,birthday");
-                request.setParameters(parameters);
-                request.executeAsync();
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Toast.makeText(getApplicationContext(), "" + error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
 
     }
 
@@ -224,27 +135,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
-        showProgressDialog("");
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        userService.signinWithFacebook(credential, mUser, new ObjectResultListener() {
-            @Override
-            public void onResult(boolean isSuccess, String error, Object object) {
-                hideProgressDialog();
-                if (isSuccess) {
-                    Log.d(TAG, "signInWithCredential:success");
-                    startMainActivity();
-                } else {
-                    Log.d(TAG, "signInWithCredential:failure");
-                    Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
 
     private void hideSoftKeyboard() {
         View view = this.getCurrentFocus();

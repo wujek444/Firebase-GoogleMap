@@ -11,14 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import pl.jwojcik.gascompanion.Constants;
 import pl.jwojcik.gascompanion.R;
 import pl.jwojcik.gascompanion.activities.LoginActivity;
@@ -35,7 +32,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private Button btnLogout;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
-    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, @NonNull ViewGroup container, @NonNull Bundle savedInstanceState) {
@@ -62,7 +58,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         tvName = view.findViewById(R.id.tv_name);
         btnResetPassword = view.findViewById(R.id.btn_reset_password);
         btnLogout = view.findViewById(R.id.btn_logout);
-        progressBar = view.findViewById(R.id.progressBar);
 
         btnResetPassword.setOnClickListener(this);
         btnLogout.setOnClickListener(this);
@@ -88,7 +83,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override

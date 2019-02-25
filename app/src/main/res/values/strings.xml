@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">GasCompanion</string>
-    <string name="facebook_app_id">161815151048402</string>
-    <string name="fb_login_protocol_scheme">fb161815151048402</string>
-    <string name="google_maps_key">AIzaSyDK0nI90G747o2B0MKdvrMhVEedYUFSSTY</string>
-    <string name="google_server_api_key">AIzaSyDK0nI90G747o2B0MKdvrMhVEedYUFSSTY</string>
+    <string name="facebook_app_id">todo</string>
+    <string name="fb_login_protocol_scheme">todo</string>
+    <string name="google_maps_key">todo</string>
+    <string name="google_server_api_key">todo</string>
 
     <string name="action_sign_in_short">Zarejestruj</string>
     <string name="email">Email</string>
